@@ -2,9 +2,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const authService = {
   init: () => {
-    if (authService.getClientIpAddress() == undefined || authService.getClientIpAddress() == '') {
+    if (authService._getClientIpAddress() == undefined || authService._getClientIpAddress() == '') {
       authService._calculateClientIpAddress().then((ip) => {
-        authService.setClientIpAddress(ip);
+        authService._setClientIpAddress(ip);
       });
     }
     authService._setupLogoutListener();
@@ -61,13 +61,13 @@ export const authService = {
   },
   isLoggedIn: () => {
     // return authConfig.getAuthenticationToken() != null; // old way - using a session token
-    return authService.getAuthenticationJwtToken() != null;
+    return authService._getAuthenticationJwtToken() != null;
   },
   logout: () => {
     console.log('logout initiated...');
 
-    let token = authService.getAuthenticationToken();
-    let jwtToken = authService.getAuthenticationJwtToken();
+    let token = authService._getAuthenticationToken();
+    let jwtToken = authService._getAuthenticationJwtToken();
     authService._clearAuthenticationInfo();
 
     // Inform backend of logout
@@ -114,20 +114,20 @@ export const authService = {
     return true;
   },
   _setAuthenticationInfo({ token, jwtToken, clientIpAddress }) {
-    authService.setClientIpAddress(clientIpAddress);
-    authService.setAuthenticationToken(token);
-    authService.setAuthenticationJwtToken(jwtToken);
+    authService._setClientIpAddress(clientIpAddress);
+    authService._setAuthenticationToken(token);
+    authService._setAuthenticationJwtToken(jwtToken);
     authService._setCookies();
   },
   _clearAuthenticationInfo() {
-    authService.removeAuthenticationToken();
-    authService.removeAuthenticationJwtToken();
+    authService._removeAuthenticationToken();
+    authService._removeAuthenticationJwtToken();
     authService._clearCookies();
   },
   _setCookies: () => {
-    document.cookie = 'authenticationToken=' + authService.getAuthenticationToken() + ";SameSite=Strict";
-    document.cookie = 'clientIpAddress=' + authService.getClientIpAddress() + ";SameSite=Strict";
-    document.cookie = 'authenticationJwtToken=' + authService.getAuthenticationJwtToken() + ";SameSite=Strict";
+    document.cookie = 'authenticationToken=' + authService._getAuthenticationToken() + ";SameSite=Strict";
+    document.cookie = 'clientIpAddress=' + authService._getClientIpAddress() + ";SameSite=Strict";
+    document.cookie = 'authenticationJwtToken=' + authService._getAuthenticationJwtToken() + ";SameSite=Strict";
   },
   _clearCookies: () => {
     document.cookie = 'authenticationToken=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -135,9 +135,9 @@ export const authService = {
     document.cookie = 'authenticationJwtToken=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   },
   _calculateClientIpAddress: async () => {
-    if (authService.getClientIpAddress() != null) return authService.getClientIpAddress(); // already generated
+    if (authService._getClientIpAddress() != null) return authService._getClientIpAddress(); // already generated
 
-    let clientIpAddress = authService.getClientIpAddress() ?? uuidv4(); // default to a UUID
+    let clientIpAddress = authService._getClientIpAddress() ?? uuidv4(); // default to a UUID
 
     // Attempt to replace the UUID with the client's IP address
     await fetch("https://api.ipify.org?format=json")

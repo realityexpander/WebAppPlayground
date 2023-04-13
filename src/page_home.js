@@ -20,7 +20,7 @@ class Home extends LitElement {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + authService.getAuthenticationToken(),
+        'Authorization': 'Bearer ' + authService._getAuthenticationToken(),
       },
     })
       .then(response => {
@@ -63,7 +63,7 @@ class Home extends LitElement {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + authService.getAuthenticationJwtToken(),
+        'Authorization': 'Bearer ' + authService._getAuthenticationJwtToken(),
       },
     })
       .then(response => {

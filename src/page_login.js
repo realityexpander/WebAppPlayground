@@ -135,6 +135,7 @@ class Login extends LitElement {
     let clientIpAddress = authService.getClientIpAddress();
 
     try {
+      this.showErrorMessage("");
       let authData = await authService.login(email, password, clientIpAddress);
 
       if (authData.error != undefined) {
@@ -156,6 +157,7 @@ class Login extends LitElement {
     let clientIpAddress = authService.getClientIpAddress();
 
     try {
+      this.showErrorMessage("");
       let authData = await authService.register(email, password, clientIpAddress);
 
       if (authData.error != undefined) {

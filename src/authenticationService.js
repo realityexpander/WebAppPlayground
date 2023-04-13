@@ -18,6 +18,8 @@ export const authService = {
     }
   },
   login: async (email, password, clientIpAddress) => {
+    authService.validateCredentials(email, password);
+
     let response = await fetch('/api/login', {
       method: 'POST',
       headers: {
@@ -41,6 +43,8 @@ export const authService = {
     return authData;
   },
   register: async (email, password, clientIpAddress) => {
+    authService.validateCredentials(email, password);
+
     let response = await fetch('/api/register', {
       method: 'POST',
       headers: {
@@ -62,6 +66,17 @@ export const authService = {
     authService.setAuthenticationInfo(authData);
 
     return authData;
+  },
+  validateCredentials: (email, password) => {
+    if (email == undefined || email == '') {
+      throw new Error('Email is required');
+    }
+
+    if (password == undefined || password == '') {
+      throw new Error('Password is required');
+    }
+
+    return true;
   },
   setAuthenticationInfo({ token, jwtToken, clientIpAddress }) {
     authService.setClientIpAddress(clientIpAddress);

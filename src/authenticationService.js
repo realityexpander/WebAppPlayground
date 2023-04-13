@@ -3,22 +3,14 @@ import { v4 as uuidv4 } from 'uuid';
 export const authService = {
   init: () => {
     if (authService.getClientIpAddress() == undefined || authService.getClientIpAddress() == '') {
-      authService.calculateClientIpAddress().then((ip) => {
+      authService._calculateClientIpAddress().then((ip) => {
         authService.setClientIpAddress(ip);
       });
     }
-    authService.setupLogoutListener();
-  },
-  setupLogoutListener: () => {
-    if (window.__is_app_logout_defined == undefined) {
-      window.__is_app_logout_defined = true;
-      document.addEventListener('logout', (e) => {
-        authService.logout();
-      });
-    }
+    authService._setupLogoutListener();
   },
   login: async (email, password, clientIpAddress) => {
-    authService.validateCredentials(email, password);
+    authService._validateCredentials(email, password);
 
     let response = await fetch('/api/login', {
       method: 'POST',
@@ -38,12 +30,12 @@ export const authService = {
     }
 
     let authData = await response.json();
-    authService.setAuthenticationInfo(authData);
+    authService._setAuthenticationInfo(authData);
 
     return authData;
   },
   register: async (email, password, clientIpAddress) => {
-    authService.validateCredentials(email, password);
+    authService._validateCredentials(email, password);
 
     let response = await fetch('/api/register', {
       method: 'POST',
@@ -63,26 +55,9 @@ export const authService = {
     }
 
     let authData = await response.json();
-    authService.setAuthenticationInfo(authData);
+    authService._setAuthenticationInfo(authData);
 
     return authData;
-  },
-  validateCredentials: (email, password) => {
-    if (email == undefined || email == '') {
-      throw new Error('Email is required');
-    }
-
-    if (password == undefined || password == '') {
-      throw new Error('Password is required');
-    }
-
-    return true;
-  },
-  setAuthenticationInfo({ token, jwtToken, clientIpAddress }) {
-    authService.setClientIpAddress(clientIpAddress);
-    authService.setAuthenticationToken(token);
-    authService.setAuthenticationJwtToken(jwtToken);
-    authService.setCookies();
   },
   isLoggedIn: () => {
     // return authConfig.getAuthenticationToken() != null; // old way - using a session token
@@ -93,7 +68,7 @@ export const authService = {
 
     let token = authService.getAuthenticationToken();
     let jwtToken = authService.getAuthenticationJwtToken();
-    authService.clearAuthenticationInfo();
+    authService._clearAuthenticationInfo();
 
     // Inform backend of logout
     fetch('/api/logout', {
@@ -117,22 +92,49 @@ export const authService = {
         window.location.href = '/'
       });
   },
-  clearAuthenticationInfo() {
+  //////////////////////////////////////////////
+  /////////////// HELPER METHODS ///////////////
+  _setupLogoutListener: () => {
+    if (window.__is_app_logout_defined == undefined) {
+      window.__is_app_logout_defined = true;
+      document.addEventListener('logout', (e) => {
+        authService.logout();
+      });
+    }
+  },
+  _validateCredentials: (email, password) => {
+    if (email == undefined || email == '') {
+      throw new Error('Email is required');
+    }
+
+    if (password == undefined || password == '') {
+      throw new Error('Password is required');
+    }
+
+    return true;
+  },
+  _setAuthenticationInfo({ token, jwtToken, clientIpAddress }) {
+    authService.setClientIpAddress(clientIpAddress);
+    authService.setAuthenticationToken(token);
+    authService.setAuthenticationJwtToken(jwtToken);
+    authService._setCookies();
+  },
+  _clearAuthenticationInfo() {
     authService.removeAuthenticationToken();
     authService.removeAuthenticationJwtToken();
-    authService.clearCookies();
+    authService._clearCookies();
   },
-  setCookies: () => {
+  _setCookies: () => {
     document.cookie = 'authenticationToken=' + authService.getAuthenticationToken() + ";SameSite=Strict";
     document.cookie = 'clientIpAddress=' + authService.getClientIpAddress() + ";SameSite=Strict";
     document.cookie = 'authenticationJwtToken=' + authService.getAuthenticationJwtToken() + ";SameSite=Strict";
   },
-  clearCookies: () => {
+  _clearCookies: () => {
     document.cookie = 'authenticationToken=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     document.cookie = 'clientIpAddress=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     document.cookie = 'authenticationJwtToken=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   },
-  calculateClientIpAddress: async () => {
+  _calculateClientIpAddress: async () => {
     if (authService.getClientIpAddress() != null) return authService.getClientIpAddress(); // already generated
 
     let clientIpAddress = authService.getClientIpAddress() ?? uuidv4(); // default to a UUID
@@ -147,12 +149,12 @@ export const authService = {
 
     return clientIpAddress;
   },
-  setClientIpAddress: (ipAddress) => localStorage.setItem('clientIpAddress', ipAddress),
-  getClientIpAddress: () => localStorage.getItem('clientIpAddress'),
-  setAuthenticationToken: (token) => localStorage.setItem('authenticationToken', token),
-  getAuthenticationToken: () => localStorage.getItem('authenticationToken'),
-  removeAuthenticationToken: () => localStorage.removeItem('authenticationToken'),
-  getAuthenticationJwtToken: () => localStorage.getItem('authenticationJwt'),
-  setAuthenticationJwtToken: (jwt) => localStorage.setItem('authenticationJwt', jwt),
-  removeAuthenticationJwtToken: () => localStorage.removeItem('authenticationJwt'),
+  _setClientIpAddress: (ipAddress) => localStorage.setItem('clientIpAddress', ipAddress),
+  _getClientIpAddress: () => localStorage.getItem('clientIpAddress'),
+  _setAuthenticationToken: (token) => localStorage.setItem('authenticationToken', token),
+  _getAuthenticationToken: () => localStorage.getItem('authenticationToken'),
+  _removeAuthenticationToken: () => localStorage.removeItem('authenticationToken'),
+  _getAuthenticationJwtToken: () => localStorage.getItem('authenticationJwt'),
+  _setAuthenticationJwtToken: (jwt) => localStorage.setItem('authenticationJwt', jwt),
+  _removeAuthenticationJwtToken: () => localStorage.removeItem('authenticationJwt'),
 }

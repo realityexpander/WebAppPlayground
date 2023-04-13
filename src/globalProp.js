@@ -1,4 +1,4 @@
-export const globalProp = "version-1.2.3.3";
+export const globalProp = "version-1.0.0";
 
 export const user = {
   id: "",

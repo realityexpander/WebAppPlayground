@@ -28,6 +28,7 @@
     "vite-dev": "vite",
     "cypress:run": "cypress run --headless --browser chrome",
     "cypress:open": "cypress open",
+    "cypress:local-run": "npx cypress run --record --key 3fb68fff-d21a-4abe-817a-ef31d8303087",
     "ci": "npm run rollup-build && wds --node-resolve --app-index index.html --esbuild-target auto --port 8081",
     "start-dev-tsc-wds-1": "concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds --open --watch --app-index index.html\"",
     "start-dev-watch-rollup": "npm run rollup-build && rollup -c -w --sourcemap"

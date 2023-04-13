@@ -1,32 +1,24 @@
 import { LitElement, html } from 'lit';
-//import { Router, RouteMixin } from 'simple-wc-router';
 import { Router, RouteMixin } from '../router/index.js';
-import { styles } from './modified-material-components-web.min.css.js';
-import { v4 as uuidv4 } from 'uuid';
+import { styles } from './style_scripts/modified-material-components-web.min.css.js';
+import { globalProp } from './globalProp.js';
+import { authService } from './authenticationService.js';
 
 // import './pages/page_home';
 // import './components';
 
 import './page_home'; // statically imported for fast loading.
 
-// export const globalProp = "version-1.2.3.3";
-import { globalProp, authConfig } from './globalProp.js';
-
 class App extends Router(LitElement) {
 
     constructor() {
-        super();
+        super(authService.isLoggedIn); // pass the `isLoggedIn` callback **FUNCTION** to the Router
 
         this.appProp = "appProp1";
-        console.log('App constructor: globalProp = ' + globalProp);
-        console.log('App constructor: appProp = ' + this.appProp);
+        // console.log('App constructor: globalProp = ' + globalProp);
+        // console.log('App constructor: appProp = ' + this.appProp);
 
-        // Configure the application
-        if (authConfig.getClientIpAddress() == undefined || authConfig.getClientIpAddress() == '') {
-            this.calculateClientIpAddress().then((ip) => {
-                authConfig.setClientIpAddress(ip);
-            });
-        }
+        authService.init();
     }
 
     // Not yet implemented
@@ -34,7 +26,6 @@ class App extends Router(LitElement) {
         let id = setInterval(() => {
             this.requestUpdate();
         }, 1000);
-
     }
 
     static get routes() { // overrides Router.routes
@@ -127,7 +118,7 @@ class App extends Router(LitElement) {
             {
                 path: "/logout",
                 render: () => {
-                    authConfig.logout();
+                    authService.logout();
                     return html`
                         <!-- center the text H & V -->
                         <style>
@@ -187,8 +178,7 @@ class App extends Router(LitElement) {
     }
 
     isLoggedIn() {
-        //return authConfig.getAuthenticationToken() != null;
-        return authConfig.isLoggedIn();
+        return authService.isLoggedIn();
     }
 
     firstUpdated() {
@@ -237,30 +227,11 @@ class App extends Router(LitElement) {
                 drawer.open = false;
             });
         });
-
-        authConfig.setupLogoutListener();
     }
 
     removeListeners() {
         topAppBar.unlisten('MDCTopAppBar:nav'); // todo - does this work? Need to know
         this.shadowRoot.removeEventListener('keydown');
-    }
-
-    // todo - put in utils.js
-    async calculateClientIpAddress() {
-        if (authConfig.getClientIpAddress() != null) return authConfig.getClientIpAddress(); // already generated
-
-        let clientIpAddress = authConfig.getClientIpAddress() ?? uuidv4(); // default to a UUID
-
-        // Attempt to replace the UUID with the client's IP address
-        await fetch("https://api.ipify.org?format=json")
-            .then(response => response.json())
-            .then(data => {
-                clientIpAddress = data.ip;
-            })
-            .catch(err => console.log("getClientIpAddress Error: " + err))
-
-        return clientIpAddress;
     }
 
     app_drawer_html = html`

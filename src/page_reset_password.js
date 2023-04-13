@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { styles } from './modified-material-components-web.min.css.js';
+import { styles } from './style_scripts/modified-material-components-web.min.css.js';
 
 // Password Reset Page
 // If no "passwordResetToken" is provided, then the user is prompted to enter their email address.

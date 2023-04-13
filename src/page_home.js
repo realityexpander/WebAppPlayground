@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
-import { styles } from './modified-material-components-web.min.css.js';
-import { globalProp, authConfig } from './globalProp.js';
+import { styles } from './style_scripts/modified-material-components-web.min.css.js';
+import { globalProp } from './globalProp.js';
+import { authService } from './authenticationService.js';
 
 class Home extends LitElement {
   static styles = styles;
@@ -19,7 +20,7 @@ class Home extends LitElement {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + authConfig.getAuthenticationToken(),
+        'Authorization': 'Bearer ' + authService.getAuthenticationToken(),
       },
     })
       .then(response => {
@@ -62,7 +63,7 @@ class Home extends LitElement {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + authConfig.getAuthenticationJWT(),
+        'Authorization': 'Bearer ' + authService.getAuthenticationJwtToken(),
       },
     })
       .then(response => {

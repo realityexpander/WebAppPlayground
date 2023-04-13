@@ -30,12 +30,13 @@ const Router = superClass =>
         lastRoute: String
       };
     }
-    constructor() {
+    constructor(isLoggedInCallback) {
       super();
 
       const route = startLocation();
       this.routeProps = {};
       this.lastRoute = null;
+      this.isLoggedInCallback = isLoggedInCallback;
       HRS({ route }, null, route);
     }
     connectedCallback() {
@@ -50,26 +51,16 @@ const Router = superClass =>
     __handleNav(ev) {
       if (!this.constructor.routes) throw Errors.Router.NoRoutes;
 
-      // let overrideNavLocation = null;
-      // let isLoginLocationInPath = ev.target.location.pathname.split("/")[1] == 'login';
-      // let isPasswordResetInPath = ev.target.location.pathname.split("/")[1] == 'password-reset';
-      // if (!isLoginLocationInPath) {
-      //   if (localStorage.getItem('token') == null) {
-      //     overrideNavLocation = '/login';
-      //   }
-      // }
-
-      //const targetRoute = window.location.pathname; //ev.state.route;
-      // const targetRoute = overrideNavLocation || ev.target.location.pathname; //ev.state.route;
       const targetRoute = ev.target.location.pathname; //ev.state.route;
       const targetRouteWithHash = ev.target.location.pathname + ev.target.location.hash;
 
       const match = matcher(this.constructor.routes, targetRoute);
       if (match) {
+        let isLoggedIn = this.isLoggedInCallback();
 
         // Check if location is secured
         if (match.route.secured) {
-          if (localStorage.getItem('token') == null) { // If not logged in...
+          if (!isLoggedIn) { // If not logged in...
             window.location.href = '/login'; // ...then Redirect to login.
             return
           }
@@ -77,7 +68,7 @@ const Router = superClass =>
 
         // Check if location is public-only (like login)
         if (match.route.publicOnly) {
-          if (localStorage.getItem('token') != null) { // If logged in...
+          if (isLoggedIn) { // If logged in...
             window.location.href = '/'; // ...then Redirect to home.
             return
           }

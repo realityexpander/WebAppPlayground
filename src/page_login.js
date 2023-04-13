@@ -1,9 +1,7 @@
 import { LitElement, html } from 'lit';
-import { styles } from './modified-material-components-web.min.css.js';
-import { authConfig } from './globalProp.js';
-
-import './my-element.ts'
-
+import { styles } from './style_scripts/modified-material-components-web.min.css.js';
+// import { authService } from './globalProp.js';
+import { authService } from './authenticationService.js';
 
 class Login extends LitElement {
 
@@ -83,8 +81,6 @@ class Login extends LitElement {
         <br>
         <br>
         
-        <!-- <my-element></my-element> -->
-        
         <br>
       </div>
       `
@@ -136,88 +132,44 @@ class Login extends LitElement {
   async login() {
     let email = this.shadowRoot.getElementById('email').value;
     let password = this.shadowRoot.getElementById('password').value;
-    let clientIpAddress = authConfig.getClientIpAddress();
+    let clientIpAddress = authService.getClientIpAddress();
 
-    fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        clientIpAddress
-      })
-    }).then(response => {
-      // Get the error Body (JSON)
-      if (!response.ok) return response.json().then(data => {
-        throw new Error(response.statusText + ":" + data.error)
-      })
-
-      return response.json()
-    }).then(authData => {
+    try {
+      let authData = await authService.login(email, password, clientIpAddress);
 
       if (authData.error != undefined) {
-        alert('Wrong email or password: ' + authData.error);
+        alert('Invalid Login: ' + authData.error);
         throw new Error(authData.error);
       }
 
-      authConfig.setAuthenticationInfo(authData);
-
-      // redirect to the home page
+      // success - redirect to the home page
       window.location.href = '/';
-    }).catch((error) => {
+    } catch (error) {
       console.error('Error:', error);
       this.showErrorMessage(error);
-    });
+    }
   }
 
   async register() {
     let email = this.shadowRoot.getElementById('email').value;
     let password = this.shadowRoot.getElementById('password').value;
-    let clientIpAddress = authConfig.getClientIpAddress();
+    let clientIpAddress = authService.getClientIpAddress();
 
-    fetch('/api/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        clientIpAddress
-      })
-    }).then(response => {
-      // if (!response.ok) throw new Error(response.statusText);
-      // Get the error Body (JSON)
-      if (!response.ok) return response.json().then(data => {
-        throw new Error(response.statusText + ":" + data.error)
-      })
+    try {
+      let authData = await authService.register(email, password, clientIpAddress);
 
-      return response.json()
-    }).then(authData => {
       if (authData.error != undefined) {
-        alert('Wrong email or password' + authData.error);
+        alert('Invalid Registration: ' + authData.error);
         throw new Error(authData.error);
       }
 
-      authConfig.setAuthenticationInfo(authData);
-
-      // navigate to the home page
+      // success - redirect to the home page
       window.location.href = '/';
-    }).catch((error) => {
+    } catch (error) {
       console.error('Error:', error);
       this.showErrorMessage(error);
-    });
+    }
   }
-
-  // // todo - move this into the authConfig class
-  // saveAuthenticationInfo({ token, jwtToken, clientIpAddress }) {
-  //   authConfig.setClientIpAddress(clientIpAddress);
-  //   authConfig.setAuthenticationToken(token);
-  //   authConfig.setAuthenticationJWT(jwtToken);
-  //   authConfig.setCookies();
-  // }
 
   showErrorMessage(message) {
     let control = this.shadowRoot.getElementById('error-message');

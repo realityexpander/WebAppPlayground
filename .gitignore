@@ -1,0 +1,7 @@
+node_modules
+dist
+.parcel-cache
+.parcel-cache/lock.mdb
+.parcel-cache/data.mdb
+dist/*.*
+cypress/screenshots

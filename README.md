@@ -109,7 +109,15 @@ Basic Auth
     - Clipboard Copy - https://patternflyelements.org/components/clipboard-copy/
     - Code Blocks - https://patternflyelements.org/components/code-block/
     - Progress Steps - https://patternflyelements.org/components/progress-stepper/
-    - 
+
+  - Modules
+    - https://adamcoster.com/blog/commonjs-and-esm-importexport-compatibility-examples
+    - Nodejs - import stuff from mjs file into js file OR how to use require in mjs file?
+      - https://stackoverflow.com/a/65784165/2857200
+
+  - Enhance SSR
+    - https://github.com/enhance-dev/enhance-ssr
+    - https://enhance.dev/docs/learn/concepts/state/store
 ### Material Design Development
   - https://m2.material.io/develop/web/supporting/ripple
   - https://m2.material.io/components/snackbars/web#installation
@@ -129,6 +137,10 @@ Basic Auth
     - https://github.com/cypress-io/cypress-component-testing-apps/tree/main/svelte-vite-ts
   - Dashboard
     - https://cloud.cypress.io/projects/e51h9h/runs/10/overview/bea4404c-42a4-4821-970e-f0916ed16bd2?roarHideRunsWithDiffGroupsAndTags=1
+  - Writing and organizing Tests
+    - https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests
+
+  - https://learn.cypress.io/advanced-cypress-concepts/intercepting-network-requests
 
   - #### run local cypress test
     - `npx cypress run --record --key 3fb68fff-d21a-4abe-817a-ef31d8303087`
@@ -140,10 +152,13 @@ Basic Auth
 
   - Axios - A better fetch
     - https://www.npmjs.com/package/axios
+    - https://axios-http.com/docs/intro
 
 ### Animation
   - Animating Custom Charts 2021 - #FrameworkLess - 20 lines code - Native Web Components
     - https://www.youtube.com/watch?v=dhZEBVOjVRU
   - Custom Web Component Behaviours and Events
     - https://www.youtube.com/watch?v=Y3EH4tCS6ig
-  - 
+
+### Utils
+  - ASYNC https://www.npmjs.com/package/async-es

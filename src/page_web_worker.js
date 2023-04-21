@@ -1,6 +1,8 @@
 import { LitElement, html } from 'lit';
 import { styles } from './style_scripts/modified-material-components-web.min.css.js';
 
+// from: https://googlechrome.github.io/samples/service-worker/basic/
+
 class WebWorker extends LitElement {
 
   static styles = styles;

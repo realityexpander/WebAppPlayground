@@ -1,5 +1,7 @@
 ## Web Components Playground
 
+for use with ktor-web-app-server and node-typescript-json-server
+
 ## Current dev setup
 - terminal 1
   - `npm run start-dev-watch-rollup`
@@ -141,6 +143,7 @@ Basic Auth
     - https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests
 
   - https://learn.cypress.io/advanced-cypress-concepts/intercepting-network-requests
+  - https://cloud.cypress.io/login  // use github
 
   - #### run local cypress test
     - `npx cypress run --record --key 3fb68fff-d21a-4abe-817a-ef31d8303087`
@@ -162,3 +165,8 @@ Basic Auth
 
 ### Utils
   - ASYNC https://www.npmjs.com/package/async-es
+
+### Browser Data for IndexDB
+- https://www.npmjs.com/package/dexie
+- https://dexie.org/docs/Download
+- 

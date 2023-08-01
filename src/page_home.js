@@ -1,5 +1,7 @@
 import { LitElement, html } from 'lit';
 import './components/date-picker.js';
+import './components/my-counter.js';
+import './components/my-element.js';
 import { styles } from './style_scripts/modified-material-components-web.min.css.js';
 import { globalProp } from './globalProp.js';
 import { authService } from './authenticationService.js';
@@ -95,6 +97,7 @@ class Home extends LitElement {
         <a href="/stocks">Stocks</a>
         <a href="/trade/123">Trade</a>
         <a href="/news/tech">News</a>
+        <a href="/myexamples">My Examples</a>
         <br>
         <br>
 
@@ -157,17 +160,12 @@ class Home extends LitElement {
         <date-picker 
           id="date-picker"
           date="08/07/1968" 
-          visible=true
           position="right"
           format="DDDD MM/DD/YYYY"
           class="date-toggle"
         ></date-picker>
         <button class="mdc-button mdc-button--outlined smaller-text"
-          @click=${(evt) => {
-        this.shadowRoot.querySelector("#date-picker").toggleCalendar(evt, true)
-        // document.querySelector("body > app-root").shadowRoot.querySelector("page-home").shadowRoot.querySelector("#date-picker").toggleCalendar(true)
-      }
-      }
+          @click=${(evt) => { this.shadowRoot.querySelector("#date-picker").toggleCalendar(evt, true) }}
         >
           <div class="mdc-button__ripple"></div>
           <span class="mdc-button__label">Pick Date</span>
@@ -187,7 +185,7 @@ class Home extends LitElement {
         <br>
 
 
-        <!-- Email Address -->
+        <!-- Email Address Text Entry -->
         <label class="mdc-text-field mdc-text-field--filled">
           <span class="mdc-text-field__ripple"></span>
           <span class="mdc-floating-label" id="hint-email-address">Email Address</span>
@@ -195,8 +193,10 @@ class Home extends LitElement {
           <span class="mdc-line-ripple"></span>
         </label>
         <br>
+        <div id="ti-text-area">Email here</div>
         <br>
       
+        <!-- Logout popup -->
         <div class="mdc-menu-surface--anchor mdc-menu mdc-menu-surface" id="menu-logout">
           <ul class="mdc-deprecated-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
             <li id="menu-item-logout-confirm" class="mdc-deprecated-list-item" role="menuitem">
@@ -209,7 +209,7 @@ class Home extends LitElement {
             </li>
           </ul>
         </div>
-        <div id="ti-text-area">Email here</div>
+    
 
       </div>
       `
@@ -236,7 +236,7 @@ class Home extends LitElement {
     // });
     emailAddress.foundation.adapter.registerInputInteractionHandler('input', (e) => {
       emailTiTextArea.textContent = e.target.value;
-      state.email = e.data;
+      // state.email = e.data; // when using input event, e.data is the character typed
     });
 
     const menuEl = this.shadowRoot.querySelector('#menu-logout');

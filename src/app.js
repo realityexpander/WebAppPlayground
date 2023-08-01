@@ -38,6 +38,12 @@ class App extends Router(LitElement) {
                 secured: true
             },
             {
+                path: "/home",
+                component: "page-home",
+                //import: () => import("./page_home.js") // its already imported, so no need to import it again.
+                secured: true
+            },
+            {
                 path: "/stocks",
                 component: "page-stocks",
                 import: () => import("./page_stocks.js"),
@@ -90,6 +96,12 @@ class App extends Router(LitElement) {
                 path: "/trade/:stockId/:?againstRate",
                 component: "page-trade",
                 import: () => import("./page_trade.js"),
+                secured: true
+            },
+            {
+                path: "/myexamples",
+                component: "page-myexamples",
+                import: () => import("./page_myexamples.js"),
                 secured: true
             },
             // Using 'category' variable, & is required.

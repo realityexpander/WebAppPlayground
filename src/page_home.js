@@ -1,4 +1,5 @@
 import { LitElement, html } from 'lit';
+import './components/date-picker.js';
 import { styles } from './style_scripts/modified-material-components-web.min.css.js';
 import { globalProp } from './globalProp.js';
 import { authService } from './authenticationService.js';
@@ -151,6 +152,30 @@ class Home extends LitElement {
         <div id="todo-list"></div>
         <br>
 
+
+        <!-- <date-picker date="08/07/1968" @click=${() => this.toggleAttribute('open')}></date-picker> -->
+        <date-picker 
+          id="date-picker"
+          date="08/07/1968" 
+          visible=true
+          position="right"
+          format="DDDD MM/DD/YYYY"
+          class="date-toggle"
+        ></date-picker>
+        <button class="mdc-button mdc-button--outlined smaller-text"
+          @click=${(evt) => {
+        this.shadowRoot.querySelector("#date-picker").toggleCalendar(evt, true)
+        // document.querySelector("body > app-root").shadowRoot.querySelector("page-home").shadowRoot.querySelector("#date-picker").toggleCalendar(true)
+      }
+      }
+        >
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Pick Date</span>
+        </button>
+        <br>
+        <p id="date-picked"></p>
+        <br>
+
         <button @click=${() => this.logout()}>Log Out</button>
         <br>
 
@@ -184,6 +209,10 @@ class Home extends LitElement {
         </div>
       </div>
       `
+  }
+
+  datePicked(date) {
+    this.shadowRoot.querySelector('#date-picked').textContent = date.detail.date;
   }
 
   firstUpdated() {

@@ -169,4 +169,7 @@ Basic Auth
 ### Browser Data for IndexDB
 - https://www.npmjs.com/package/dexie
 - https://dexie.org/docs/Download
-- 
+
+### Deploy using Docker
+- https://codersee.com/easily-deploy-ktor-server-with-docker/#elementor-action%3Aaction%3Dpopup%3Aclose%26settings%3DeyJkb19ub3Rfc2hvd19hZ2FpbiI6InllcyJ9
+  

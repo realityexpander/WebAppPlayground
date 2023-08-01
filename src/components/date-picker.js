@@ -213,8 +213,8 @@ class DatePicker extends HTMLElement {
     this.calendarDaysContainer = this.calendarDropDown.querySelector('.month-days');
 
     this.toggleButton.addEventListener('click', (evt) => this.toggleCalendar(evt, true));
-    prevBtn.addEventListener('click', () => this.prevMonth());
-    nextButton.addEventListener('click', () => this.nextMonth());
+    prevBtn.addEventListener('click', (evt) => this.prevMonth(evt));
+    nextButton.addEventListener('click', (evt) => this.nextMonth(evt));
     document.addEventListener('click', (evt) => this.handleClickOut(evt));
 
     this.renderCalendarDays();
@@ -251,7 +251,6 @@ class DatePicker extends HTMLElement {
   }
 
   toggleCalendar(evt, visible = null) {
-
     evt.stopPropagation()
 
     if (visible === null) {
@@ -276,12 +275,14 @@ class DatePicker extends HTMLElement {
     }
   }
 
-  prevMonth() {
+  prevMonth(evt) {
+    evt.stopPropagation()
     this.calendar.goToPreviousMonth();
     this.renderCalendarDays();
   }
 
-  nextMonth() {
+  nextMonth(evt) {
+    evt.stopPropagation()
     this.calendar.goToNextMonth();
     this.renderCalendarDays();
   }
@@ -305,7 +306,8 @@ class DatePicker extends HTMLElement {
       this.calendar.year === this.date.year;
   }
 
-  selectDay(el, day) {
+  selectDay(evt, el, day) {
+    evt.stopPropagation()
     if (day.isEqualTo(this.date)) return;
 
     this.date = day;
@@ -318,11 +320,16 @@ class DatePicker extends HTMLElement {
       this.selectedDayElement = el;
     }
 
-    this.toggleCalendar();
+    this.toggleCalendar(evt, false);
     this.updateToggleText();
   }
 
   handleClickOut(evt) {
+    evt.stopPropagation()
+    if (!this.visible) return;
+
+    if (this.shadowRoot.querySelector(".calendar-dropdown").contains(evt.target)) return;
+
     if (this.visible && (this !== evt.target)) {
       this.toggleCalendar(evt, false);
     }
@@ -365,7 +372,7 @@ class DatePicker extends HTMLElement {
       const el = document.createElement('button');
       el.className = 'month-day';
       el.textContent = day.date;
-      el.addEventListener('click', (e) => this.selectDay(el, day));
+      el.addEventListener('click', (evt) => this.selectDay(evt, el, day));
       el.setAttribute('aria-label', day.format(this.format));
 
       if (day.monthNumber === this.calendar.month.number) {

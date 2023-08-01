@@ -186,6 +186,8 @@ class Home extends LitElement {
         <br>
         <br>
 
+
+        <!-- Email Address -->
         <label class="mdc-text-field mdc-text-field--filled">
           <span class="mdc-text-field__ripple"></span>
           <span class="mdc-floating-label" id="hint-email-address">Email Address</span>
@@ -207,6 +209,8 @@ class Home extends LitElement {
             </li>
           </ul>
         </div>
+        <div id="ti-text-area">Email here</div>
+
       </div>
       `
   }
@@ -225,12 +229,13 @@ class Home extends LitElement {
     // listen for text changes to Email Address
     const emailAddressEl = this.shadowRoot.querySelector('#ti-email-address');
     const emailAddress = mdc.textField.MDCTextField.attachTo(this.shadowRoot.querySelector('.mdc-text-field--filled'));
+    const emailTiTextArea = this.shadowRoot.querySelector('#ti-text-area');
     // emailAddressEl.addEventListener('input', (e) => {
     //   document.querySelector('#ti-text-area').textContent = e.target.value;
     //   state.email = e.target.value;
     // });
     emailAddress.foundation.adapter.registerInputInteractionHandler('input', (e) => {
-      document.querySelector('#ti-text-area').textContent = e.target.value;
+      emailTiTextArea.textContent = e.target.value;
       state.email = e.data;
     });
 

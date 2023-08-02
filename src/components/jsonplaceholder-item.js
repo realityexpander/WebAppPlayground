@@ -74,9 +74,9 @@ class JsonPlaceholder extends HTMLElement {
     shadowRoot.append(template.content.cloneNode(true));
 
     // Internal Object properties
-    this._id = ""
-    this._data = ""
-    this._state = ""  // "loading", "loaded", "error"
+    this._id = null
+    this._data = null
+    this._state = "loading"  // "loading", "loaded", "error"
   }
 
   connectedCallback() {
@@ -125,7 +125,7 @@ class JsonPlaceholder extends HTMLElement {
     }));
   }
 
-  static observedAttributes = ["state", "src", "id"];
+  static observedAttributes = ["state", "url", "id", "reqBody"];
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue !== newValue) {
@@ -152,11 +152,11 @@ class JsonPlaceholder extends HTMLElement {
   }
 
   get src() {
-    return this._src ?? "";
+    return this._url ?? "";
   }
   set src(v) {
-    this.setAttribute("src", v);
-    this._src = v
+    this.setAttribute("url", v);
+    this._url = v
     this._performFetch();
   }
 
@@ -183,16 +183,35 @@ class JsonPlaceholder extends HTMLElement {
   }
 
   _performFetch() {
-    if(this._src==undefined) return
-    
-    fetch(this._src)
+    if (this._url == undefined) return
+
+    const todo = [{
+      id: 12345,
+      name: "Hello Name",
+      status: "Pending",
+    }];
+
+    let request = new Request(this._url, {
+      method: 'POST',
+      body: JSON.stringify(todo),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+      // Note: "mode: 'no-cors'" is not needed if the server is setup to allow CORS. 
+      // If using "mode: 'no-cors'", the response will be opaque and the `response.ok` will be false 
+      // but the `response.status` will be 200. The response will not be able to be parsed as JSON.
+      // The request will still be sent to the server, but the response will not be returned to the client.
+      // mode: 'no-cors', 
+    });
+
+    fetch(request)
       .then(response => response.json())
       .then(json => {
-          this._id = json.id
-          this._data = json.title + ", completed:" + json.completed
+        this._id = json[0].id
+        this._data = json[0].name + ", completed:" + json[0].status
 
-          this.state = "loaded"
-        }
+        this.state = "loaded"
+      }
       )
   }
 

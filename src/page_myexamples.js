@@ -1,5 +1,8 @@
 import { LitElement, html } from 'lit';
 import { styles } from './style_scripts/modified-material-components-web.min.css.js';
+import './components/my-counter.js';
+import './components/my-element.js';
+import './components/jsonplaceholder-item.js';
 
 class MyExamples extends LitElement {
   render() {
@@ -14,6 +17,10 @@ class MyExamples extends LitElement {
 
         <!-- My-Element -->
         <my-element name="chris"></my-element>
+        <br>
+
+        <!-- Json Placeholder -->
+        <jsonplaceholder-item src="http://localhost:8081/todo_echo"></jsonplaceholder-item>
       </div>
     `
   }

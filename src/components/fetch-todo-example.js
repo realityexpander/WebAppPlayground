@@ -1,4 +1,6 @@
-class JsonPlaceholder extends HTMLElement {
+import { authService } from "../authenticationService";
+
+class FetchTodoExample extends HTMLElement {
 
   static get componentStyle() {
     return `
@@ -55,7 +57,7 @@ class JsonPlaceholder extends HTMLElement {
     const template = document.createElement('template');
     template.innerHTML = `
       <style>
-        ${JsonPlaceholder.componentStyle}
+        ${FetchTodoExample.componentStyle}
       </style>
 
       <label id="display" class="item">
@@ -65,7 +67,9 @@ class JsonPlaceholder extends HTMLElement {
         </span>
 
         <span class="item__text">
-          <slot></slot> 
+          <pre>
+            <slot></slot> 
+          </pre>
         </span>
 
         <p id="error" hidden>Error</p>
@@ -125,7 +129,7 @@ class JsonPlaceholder extends HTMLElement {
     }));
   }
 
-  static observedAttributes = ["state", "url", "id", "reqBody"];
+  static observedAttributes = ["state", "url", "id"];
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue !== newValue) {
@@ -151,10 +155,10 @@ class JsonPlaceholder extends HTMLElement {
     this._updateUIFromState();
   }
 
-  get src() {
+  get url() {
     return this._url ?? "";
   }
-  set src(v) {
+  set url(v) {
     this.setAttribute("url", v);
     this._url = v
     this._performFetch();
@@ -185,17 +189,23 @@ class JsonPlaceholder extends HTMLElement {
   _performFetch() {
     if (this._url == undefined) return
 
+    // sample body
     const todo = [{
       id: 12345,
       name: "Hello Name",
       status: "Pending",
     }];
 
+    const clientIpAddress = authService.getClientIpAddress();
+    const authenticationToken = authService.getAuthenticationToken();
+
     let request = new Request(this._url, {
-      method: 'POST',
-      body: JSON.stringify(todo),
+      method: 'GET',
+      // body: JSON.stringify(todo),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-Forwarded-For': clientIpAddress,
+        'Authorization': 'Bearer ' + authenticationToken,
       }
       // Note: "mode: 'no-cors'" is not needed if the server is setup to allow CORS. 
       // If using "mode: 'no-cors'", the response will be opaque and the `response.ok` will be false 
@@ -207,13 +217,15 @@ class JsonPlaceholder extends HTMLElement {
     fetch(request)
       .then(response => response.json())
       .then(json => {
-        this._id = json[0].id
-        this._data = json[0].name + ", completed:" + json[0].status
+
+        // this._id = json[0].id
+        // this._data = "name: " + json[0].name + ", status: " + json[0].status
+
+        this._data = "\n" + JSON.stringify(json, null, 2)
 
         this.state = "loaded"
-      }
-      )
+      })
   }
 
 }
-customElements.define('jsonplaceholder-item', JsonPlaceholder);
+customElements.define('fetch-todo-example', FetchTodoExample);

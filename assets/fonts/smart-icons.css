@@ -1,0 +1,47 @@
+.smart-icons {
+  display: inline-block;
+  font-family: 'smart-icons';
+  font-size: 24px;
+  /* Preferred icon size */
+  font-weight: normal;
+  line-height: 1;
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+/* @font-face {
+  font-family: "smart-icons";
+  src: url("https://raw.githubusercontent.com/HTMLElements/smart-webcomponents-angular/master/source/styles/font/smart-icons.eot");
+  src:
+    url("https://raw.githubusercontent.com/HTMLElements/smart-webcomponents-angular/master/source/styles/font/smart-icons.woff2") format("woff2"),
+    url("https://raw.githubusercontent.com/HTMLElements/smart-webcomponents-angular/master/source/styles/font/smart-icons.woff") format("woff"),
+    url("https://raw.githubusercontent.com/HTMLElements/smart-webcomponents-angular/master/source/styles/font/smart-icons.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+} */
+
+@font-face {
+  font-family: "smart-icons";
+  src: url("/assets/fonts/smart-icons.eot");
+  src:
+    url("/assets/fonts/smart-icons.woff2") format("woff2"),
+    url("/assets/fonts/font/smart-icons.woff") format("woff"),
+    url("/assets/fonts/font/smart-icons.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}

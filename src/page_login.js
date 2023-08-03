@@ -132,7 +132,7 @@ class Login extends LitElement {
   async login() {
     let email = this.shadowRoot.getElementById('email').value;
     let password = this.shadowRoot.getElementById('password').value;
-    let clientIpAddress = authService._getClientIpAddress();
+    let clientIpAddress = authService.getClientIpAddress();
 
     try {
       this.showErrorMessage("");
@@ -154,7 +154,7 @@ class Login extends LitElement {
   async register() {
     let email = this.shadowRoot.getElementById('email').value;
     let password = this.shadowRoot.getElementById('password').value;
-    let clientIpAddress = authService._getClientIpAddress();
+    let clientIpAddress = authService.getClientIpAddress();
 
     try {
       this.showErrorMessage("");

@@ -56,19 +56,11 @@ class MyExamples extends LitElement {
     const dataTable2 = new MDCDataTable(this.shadowRoot.querySelector('.mdc-data-table2'));
     dataTable2.listen('MDCDataTable:sorted', (event) => {
       const data = event.detail;
-
-      // Here is where you would re-sort the data and rebuild the table.
-      console.log(`Sorted ${data.columnId} ${data.sortValue}`);
-      // this.sortTableByColumn(data.columnId, data.sortValue)
       this.sortTableByColumn(event.currentTarget, data.columnId, data.sortValue)
     })
 
-    // send message to sort by carbs
-    // dataTable2.emit('MDCDataTable:sorted', { columnId: 'protein', sortValue: 'descending' });
-
     // send click to sort by carbs
-    dataTable2.getHeaderCells()[1].click()
-
+    dataTable2.getHeaderCells()[2].click()
   }
 
   sortTableByColumn(table, column, order) {
@@ -385,10 +377,14 @@ class MyExamples extends LitElement {
                   </div>
                 </th>
                 <th
-                  class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric mdc-data-table__header-cell--with-sort mdc-data-table__header-cell--sorted"
+                  class="
+                    mdc-data-table__header-cell 
+                    mdc-data-table__header-cell--numeric 
+                    mdc-data-table__header-cell--with-sort 
+                    mdc-data-table__header-cell"
                   role="columnheader"
                   scope="col"
-                  aria-sort="ascending"
+                  aria-sort="none"
                   data-column-id="carbs"
                 >
                   <div class="mdc-data-table__header-cell-wrapper">
@@ -466,6 +462,16 @@ class MyExamples extends LitElement {
                   1.0
                 </td>
                 <td class="mdc-data-table__cell">It is necessary for health</td>
+              </tr>
+              <tr class="mdc-data-table__row">
+                <td class="mdc-data-table__cell">Fried Chicken Ice Cream</td>
+                <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
+                  20
+                </td>
+                <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
+                  12.0
+                </td>
+                <td class="mdc-data-table__cell">Its a meal and dessert</td>
               </tr>
             </tbody>
           </table>

@@ -382,15 +382,12 @@ class MyExamples extends LitElement {
 
         <!-- Note: Cant load fonts here, load from main app index.html -->
 
-        <!-- <script type="module" src="../node_modules/smart-webcomponents/source/modules/smart.table.js"></script> -->
         <link rel="stylesheet" type="text/css" href="/styles/smart.default.css" />
         <link rel="stylesheet" type="text/css" href="/styles/smart.variables.css" />
         <!-- <link rel="stylesheet" type="text/css" href="../node_modules/smart-webcomponents/source/style/smart.default.css"></link> -->
         <!-- <link rel="stylesheet" type="text/css" href="../node_modules/smart-webcomponents/source/style/smart.variables.css"></link> -->
         <style>
-          /* .smart-table { */
           * {
-          /* :root { */
             /* --smart-border-width: 1px; */
             /* --smart-border: red; */
             /* --smart-table-cell-padding: 2px;  */

@@ -81,6 +81,7 @@ class FetchTodoExample extends HTMLElement {
     this._id = null
     this._data = null
     this._state = "loading"  // "loading", "loaded", "error"
+    this._errorMessage = null
   }
 
   connectedCallback() {
@@ -183,6 +184,7 @@ class FetchTodoExample extends HTMLElement {
       this.shadowRoot.querySelector('#display').hidden = true;
       this.shadowRoot.querySelector('#loading').hidden = true;
       this.shadowRoot.querySelector('#error').hidden = false;
+      this.shadowRoot.querySelector('#error').innerHTML = `<p>Error: ${this._errorMessage}</p>`
     }
   }
 
@@ -215,15 +217,25 @@ class FetchTodoExample extends HTMLElement {
     });
 
     fetch(request)
-      .then(response => response.json())
+      .then((response, reject) => {
+        if (!response.ok) {
+          throw new Error(`Network response was not ok, code=${response.status}, message=${response.statusText}`);
+        }
+
+        return response.json()
+      })
       .then(json => {
 
         // this._id = json[0].id
         // this._data = "name: " + json[0].name + ", status: " + json[0].status
 
         this._data = "\n" + JSON.stringify(json, null, 2)
-
         this.state = "loaded"
+      })
+      .catch(err => {
+        // console.error(err)
+        this._errorMessage = err.message
+        this.state = "error"
       })
   }
 

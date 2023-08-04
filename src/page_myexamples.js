@@ -27,60 +27,26 @@ class MyExamples extends LitElement {
     // Smart Elements Table
     // Note: Dont create JS element using the built-in methods.
     // Create manually for web-component based elements, as so:
-    const table = this.shadowRoot.querySelector('#table');
-    table.dataSource = new Smart.DataAdapter(
-      {
-        dataSource: MyExamples.getCountriesData(),
-        dataFields:
-          [
-            'ID: number',
-            'Country: string',
-            'Area: number',
-            'Population_Urban: number',
-            'Population_Rural: number',
-            'Population_Total: number',
-            'GDP_Agriculture: number',
-            'GDP_Industry: number',
-            'GDP_Services: number',
-            'GDP_Total: number'
-          ]
-      })
-    table.columns = [
-      'Country',
-      'Area',
-      'Population_Rural',
-      'Population_Total',
-      'GDP_Total'
-    ]
-    table.sortBy('Population_Total', 'asc');
-    table.disabled = false;
+    this.createSmartTable();
 
-
-    // Material Design tables
+    // Material Design Basic
     const dataTable = new MDCDataTable(this.shadowRoot.querySelector('.mdc-data-table'));
 
-    // // note: does not sort automatically. Must respond to messages.
-    // const dataTable2 = new MDCDataTable(this.shadowRoot.querySelector('.mdc-data-table2'));
-    // dataTable2.listen('MDCDataTable:sorted', (event) => {
-    //   const data = event.detail;
-    //   this.sortTableByColumn(event.currentTarget, data.columnId, data.sortValue)
-    // })
-    // // send click to sort by carbs (column 2) (updates the icon & calls the correct sort)
-    // dataTable2.getHeaderCells()[1].click()
-
-    // this.dataTableAddRow({
-    //   name: 'ADDED TO HTML PROGRAMMATICALLY',
-    //   carbs: 7,
-    //   protein: '4.0',
-    //   comments: 'Super tasty'
-    // }, this.shadowRoot.querySelector('.mdc-data-table2'))
-
+    // Material Design tables
+    this.createMaterialDesignTable2();
 
     // Build DataTable HTML for Material Design
-    let table3 = this.shadowRoot.querySelector('.mdc-data-table3')
-    // const columnTitles = { name: "Dessert", carbs: "Carbs (g)", protein: "Protein (g)", comments: "Comments" }
-    const columnTitles = { "Country": "XUNTRY", "Population_Urban": "Pop. City", "Population_Rural": "Pop. Kuntry" }
-    let data1 = [
+    this.createCountriesMaterialDesignTable();
+
+    // Build DataTable HTML for Material Design for Desserts
+    this.createDesertsMaterialDesignTable();
+  }
+
+  createDesertsMaterialDesignTable() {
+    // let table = this.shadowRoot.querySelector('.mdc-data-table3');
+    let table = this.shadowRoot.querySelector('#mdc-data-table-desert');
+    const columnTitles = { name: "Dessert", carbs: "Carbs (g)", protein: "Protein (g)", comments: "Comments" }
+    let data = [
       {
         name: 'Frozen yogurt',
         carbs: 24,
@@ -105,16 +71,87 @@ class MyExamples extends LitElement {
         protein: '56.02',
         comments: 'What we used to call your mom'
       }
-    ]
-    let data = MyExamples.getCountriesData()
-    table3.innerHTML = this.createDataTableHtml(data, "Desert Nutrition", columnTitles)
+    ];
+    table.innerHTML = this.createDataTableHtml(data, "Desert Nutrition", columnTitles);
+    const dataTable = new MDCDataTable(this.shadowRoot.querySelector('#mdc-data-table-desert'));
+    dataTable.listen('MDCDataTable:sorted', (event) => {
+      const data = event.detail;
+      this.sortTableByColumn(event.currentTarget, data.columnId, data.sortValue);
+    });
+
+    // send click to sort by carbs (column 2) (updates the icon & calls the correct sort)
+    dataTable.getHeaderCells()[1].click(); // select: column-2 asc
+  }
+
+  createCountriesMaterialDesignTable() {
+    let table = this.shadowRoot.querySelector('.mdc-data-table3');
+    const columnTitles = {
+      "Country": "XUNTRY",
+      "Population_Urban": "Pop. City",
+      "Population_Rural": "Pop. Kuntry",
+      "GDP_Agriculture": "GDP Ag.",
+      "GDP_Industry": "GDP Ind.",
+      "GDP_Services": "GDP Srv.",
+    };
+    let data = MyExamples.getCountriesData();
+    table.innerHTML = this.createDataTableHtml(data, "Countries", columnTitles);
     // table3.innerHTML = this.createDataTableHtml(data, "Countries")
     const dataTable3 = new MDCDataTable(this.shadowRoot.querySelector('.mdc-data-table3'));
     dataTable3.listen('MDCDataTable:sorted', (event) => {
       const data = event.detail;
-      this.sortTableByColumn(event.currentTarget, data.columnId, data.sortValue)
-    })
-    // dataTable3.getHeaderCells()[1].click() // select: column-2 asc
+      this.sortTableByColumn(event.currentTarget, data.columnId, data.sortValue);
+    });
+
+    // send click to sort by carbs (column 2) (updates the icon & calls the correct sort)
+    dataTable3.getHeaderCells()[1].click(); // select: column-2 asc
+  }
+
+  createMaterialDesignTable2() {
+    // note: does not sort automatically. Must respond to messages & use our sort method.
+    const dataTable2 = new MDCDataTable(this.shadowRoot.querySelector('.mdc-data-table2'));
+    dataTable2.listen('MDCDataTable:sorted', (event) => {
+      const data = event.detail;
+      this.sortTableByColumn(event.currentTarget, data.columnId, data.sortValue);
+    });
+
+    // send click to sort by carbs (column 2) (updates the icon & calls the correct sort)
+    // dataTable2.getHeaderCells()[1].click();
+
+    this.dataTableAddRow({
+      name: 'ADDED TO HTML PROGRAMMATICALLY',
+      carbs: 7,
+      protein: '4.0',
+      comments: 'Super tasty'
+    }, this.shadowRoot.querySelector('.mdc-data-table2'));
+  }
+
+  createSmartTable() {
+    const table = this.shadowRoot.querySelector('#table');
+    table.dataSource = new Smart.DataAdapter(
+      {
+        dataSource: MyExamples.getCountriesData(),
+        dataFields: [
+          'ID: number',
+          'Country: string',
+          'Area: number',
+          'Population_Urban: number',
+          'Population_Rural: number',
+          'Population_Total: number',
+          'GDP_Agriculture: number',
+          'GDP_Industry: number',
+          'GDP_Services: number',
+          'GDP_Total: number'
+        ]
+      });
+    table.columns = [
+      'Country',
+      'Area',
+      'Population_Rural',
+      'Population_Total',
+      'GDP_Total'
+    ];
+    table.sortBy('Population_Total', 'asc');
+    table.disabled = false;
   }
 
   dataTableAddRow(data, table) {
@@ -416,6 +453,8 @@ class MyExamples extends LitElement {
 
 
         <!-- Material Design table -->
+        <h1>Material Design Table</h1>
+
         <div class="mdc-data-table">
           <div class="mdc-data-table__table-container">
             <table class="mdc-data-table__table" aria-label="Manufacturing Operations">
@@ -528,8 +567,9 @@ class MyExamples extends LitElement {
         </div>
 
         <!-- Material Design Table 2 -->
+        <h1>Material Design Table 2</h1>
 
-        <!-- <div class="mdc-data-table2">
+        <div class="mdc-data-table2">
           <table class="mdc-data-table__table" aria-label="Dessert calories">
             <thead>
               <tr class="mdc-data-table__header-row">
@@ -651,9 +691,15 @@ class MyExamples extends LitElement {
               </tr>
             </tbody>
           </table>
-        </div> -->
+        </div>
 
+        <!-- Material Design Table 3 -->  
+        <h1>Material Design Table 3</h1>
         <div class="mdc-data-table3"></div>
+
+        <!-- Material Design Table Desert -->  
+        <h1>Material Design Table Deserts</h1>
+        <div id="mdc-data-table-desert"></div>
 
       </div>
     `

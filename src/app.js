@@ -99,9 +99,15 @@ class App extends Router(LitElement) {
                 secured: true
             },
             {
-                path: "/myexamples",
-                component: "page-myexamples",
-                import: () => import("./page_myexamples.js"),
+                path: "/simpletables",
+                component: "page-simpletables",
+                import: () => import("./page_simpletables.js"),
+                secured: true
+            },
+            {
+                path: "/typescript-test",
+                component: "page-typescript-test",
+                import: () => import("./page_typescript_test.js"),
                 secured: true
             },
             // Using 'category' variable, & is required.

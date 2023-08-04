@@ -4,12 +4,12 @@ import './components/my-counter.js';
 import './components/my-element.js';
 import './components/fetched-json-item.js';
 
-import '../node_modules/smart-webcomponents/source/smart.element.js';
-import '../node_modules/smart-webcomponents/source/smart.data.js';
-import '../node_modules/smart-webcomponents/source/modules/smart.table.js';
+import 'smart-webcomponents/source/smart.element.js';
+import 'smart-webcomponents/source/smart.data.js';
+import 'smart-webcomponents/source/modules/smart.table.js';
 import smart_styles from './style_scripts/smart_default_css.js';
 
-import { MDCDataTable } from '../node_modules/@material/data-table/index.js';
+import { MDCDataTable } from '@material/data-table/index.js';
 
 
 function isNumeric(str) {
@@ -18,7 +18,7 @@ function isNumeric(str) {
     !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
 }
 
-class MyExamples extends LitElement {
+class SimpleTables extends LitElement {
 
   static styles = styles;
   // static styles = smart_styles;
@@ -93,7 +93,7 @@ class MyExamples extends LitElement {
       "GDP_Industry": "GDP Ind.",
       "GDP_Services": "GDP Srv.",
     };
-    let data = MyExamples.getCountriesData();
+    let data = SimpleTables.getCountriesData();
     table.innerHTML = this.createMaterialDesignDataTableHtml(data, "Countries", columnTitles);
     // table3.innerHTML = this.createDataTableHtml(data, "Countries")
     const dataTable3 = new MDCDataTable(this.shadowRoot.querySelector('.mdc-data-table3'));
@@ -129,7 +129,7 @@ class MyExamples extends LitElement {
     const table = this.shadowRoot.querySelector('#table');
     table.dataSource = new Smart.DataAdapter(
       {
-        dataSource: MyExamples.getCountriesData(),
+        dataSource: SimpleTables.getCountriesData(),
         dataFields: [
           'ID: number',
           'Country: string',
@@ -735,4 +735,4 @@ class MyExamples extends LitElement {
     `
   }
 }
-customElements.define('page-myexamples', MyExamples);
+customElements.define('page-simpletables', SimpleTables);

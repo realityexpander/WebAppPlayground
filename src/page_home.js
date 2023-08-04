@@ -97,11 +97,22 @@ class Home extends LitElement {
         <a href="/stocks">Stocks</a>
         <a href="/trade/123">Trade</a>
         <a href="/news/tech">News</a>
-        <a href="/myexamples">My Examples</a>
+        <a href="/simpletables">SimpleTables</a>
         <br>
         <br>
 
         <button @click=${() => window.location = '/stocks'}>Go to stocks</button>
+        <br>
+        <br>
+
+        <button 
+          @click=${() => window.location = '/typescript-test'} 
+          id="btn-nav-to-typescript" 
+          class="mdc-button mdc-button--outlined smaller-text"
+        >
+          <div class="mdc-button__ripple"></div>
+          <span class="mdc-button__label">Typescript Test</span>
+        </button>
         <br>
         <br>
 

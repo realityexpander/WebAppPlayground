@@ -72,11 +72,11 @@ class MyExamples extends LitElement {
         comments: 'What we used to call your mom'
       }
     ];
-    table.innerHTML = this.createDataTableHtml(data, "Desert Nutrition", columnTitles);
+    table.innerHTML = this.createMaterialDesignDataTableHtml(data, "Desert Nutrition", columnTitles);
     const dataTable = new MDCDataTable(this.shadowRoot.querySelector('#mdc-data-table-desert'));
     dataTable.listen('MDCDataTable:sorted', (event) => {
       const data = event.detail;
-      this.sortTableByColumn(event.currentTarget, data.columnId, data.sortValue);
+      this.sortMaterialDesignTableByColumn(event.currentTarget, data.columnId, data.sortValue);
     });
 
     // send click to sort by carbs (column 2) (updates the icon & calls the correct sort)
@@ -94,12 +94,12 @@ class MyExamples extends LitElement {
       "GDP_Services": "GDP Srv.",
     };
     let data = MyExamples.getCountriesData();
-    table.innerHTML = this.createDataTableHtml(data, "Countries", columnTitles);
+    table.innerHTML = this.createMaterialDesignDataTableHtml(data, "Countries", columnTitles);
     // table3.innerHTML = this.createDataTableHtml(data, "Countries")
     const dataTable3 = new MDCDataTable(this.shadowRoot.querySelector('.mdc-data-table3'));
     dataTable3.listen('MDCDataTable:sorted', (event) => {
       const data = event.detail;
-      this.sortTableByColumn(event.currentTarget, data.columnId, data.sortValue);
+      this.sortMaterialDesignTableByColumn(event.currentTarget, data.columnId, data.sortValue);
     });
 
     // send click to sort by carbs (column 2) (updates the icon & calls the correct sort)
@@ -111,13 +111,13 @@ class MyExamples extends LitElement {
     const dataTable2 = new MDCDataTable(this.shadowRoot.querySelector('.mdc-data-table2'));
     dataTable2.listen('MDCDataTable:sorted', (event) => {
       const data = event.detail;
-      this.sortTableByColumn(event.currentTarget, data.columnId, data.sortValue);
+      this.sortMaterialDesignTableByColumn(event.currentTarget, data.columnId, data.sortValue);
     });
 
     // send click to sort by carbs (column 2) (updates the icon & calls the correct sort)
     // dataTable2.getHeaderCells()[1].click();
 
-    this.dataTableAddRow({
+    this.AddRowToMaterialDesignDataTable({
       name: 'ADDED TO HTML PROGRAMMATICALLY',
       carbs: 7,
       protein: '4.0',
@@ -154,7 +154,7 @@ class MyExamples extends LitElement {
     table.disabled = false;
   }
 
-  dataTableAddRow(data, table) {
+  AddRowToMaterialDesignDataTable(data, table) {
     // add row to table
     let rowHtml = `
       <tr class="mdc-data-table__row">
@@ -176,7 +176,7 @@ class MyExamples extends LitElement {
     table.querySelector('table tbody').innerHTML = html + rowHtml
   }
 
-  createDataTableHeaderRowHtml(titleId, title) {
+  createMaterialDesignDataTableHeaderRowHtml(titleId, title) {
     return `
     <th
       class="
@@ -200,7 +200,7 @@ class MyExamples extends LitElement {
     `;
   }
 
-  createDataTableDataRowHtml(data, key) {
+  createMaterialDesignDataTableDataRowHtml(data, key) {
     let value = data[key]
 
     // Check if data is a number
@@ -220,7 +220,7 @@ class MyExamples extends LitElement {
   }
 
   // Leave off columnTitles array to use the keys as the column titles
-  createDataTableHtml(data, tableTitle = "Data Table", columnTitles) {
+  createMaterialDesignDataTableHtml(data, tableTitle = "Data Table", columnTitles) {
 
     let html = `
       <h3>${tableTitle}</h3>
@@ -236,12 +236,12 @@ class MyExamples extends LitElement {
       // If columnTitles is defined, use it and only include the columns that are defined.
       if (columnTitles && columnTitles[key]) {
         columnTitle = columnTitles[key]
-        html += this.createDataTableHeaderRowHtml(key, columnTitle)
+        html += this.createMaterialDesignDataTableHeaderRowHtml(key, columnTitle)
       }
 
       // If columnTitles is not defined, use the key as the column title and include all columns.
       if (!columnTitles) {
-        html += this.createDataTableHeaderRowHtml(key, columnTitle)
+        html += this.createMaterialDesignDataTableHeaderRowHtml(key, columnTitle)
       }
     })
 
@@ -261,12 +261,12 @@ class MyExamples extends LitElement {
         // If columnTitles is defined, use it and only include the columns that are defined.
         if (columnTitles && columnTitles[key]) {
           columnTitle = columnTitles[key]
-          html += this.createDataTableDataRowHtml(row, key)
+          html += this.createMaterialDesignDataTableDataRowHtml(row, key)
         }
 
         // If columnTitles is not defined, use the key as the column title and include all columns.
         if (!columnTitles) {
-          html += this.createDataTableDataRowHtml(row, key)
+          html += this.createMaterialDesignDataTableDataRowHtml(row, key)
         }
 
       })
@@ -281,7 +281,7 @@ class MyExamples extends LitElement {
     return html
   }
 
-  sortTableByColumn(table, column, order) {
+  sortMaterialDesignTableByColumn(table, column, order) {
     // get header & table content
     let headings = table.querySelector('table thead').querySelectorAll("th")
     const content = table.querySelector('table tbody').querySelectorAll("tr")

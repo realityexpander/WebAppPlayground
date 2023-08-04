@@ -11,6 +11,13 @@ import smart_styles from './style_scripts/smart_default_css.js';
 
 import { MDCDataTable } from '../node_modules/@material/data-table/index.js';
 
+
+function isNumeric(str) {
+  if (typeof str != "string") return false // we only process strings!  
+  return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+    !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+}
+
 class MyExamples extends LitElement {
 
   static styles = styles;
@@ -52,40 +59,208 @@ class MyExamples extends LitElement {
     // Material Design tables
     const dataTable = new MDCDataTable(this.shadowRoot.querySelector('.mdc-data-table'));
 
-    // note: does not sort automatically. Must respond to messages.
-    const dataTable2 = new MDCDataTable(this.shadowRoot.querySelector('.mdc-data-table2'));
-    dataTable2.listen('MDCDataTable:sorted', (event) => {
+    // // note: does not sort automatically. Must respond to messages.
+    // const dataTable2 = new MDCDataTable(this.shadowRoot.querySelector('.mdc-data-table2'));
+    // dataTable2.listen('MDCDataTable:sorted', (event) => {
+    //   const data = event.detail;
+    //   this.sortTableByColumn(event.currentTarget, data.columnId, data.sortValue)
+    // })
+    // // send click to sort by carbs (column 2) (updates the icon & calls the correct sort)
+    // dataTable2.getHeaderCells()[1].click()
+
+    // this.dataTableAddRow({
+    //   name: 'ADDED TO HTML PROGRAMMATICALLY',
+    //   carbs: 7,
+    //   protein: '4.0',
+    //   comments: 'Super tasty'
+    // }, this.shadowRoot.querySelector('.mdc-data-table2'))
+
+
+    // Build DataTable HTML for Material Design
+    let table3 = this.shadowRoot.querySelector('.mdc-data-table3')
+    // const columnTitles = { name: "Dessert", carbs: "Carbs (g)", protein: "Protein (g)", comments: "Comments" }
+    const columnTitles = { "Country": "XUNTRY", "Population_Urban": "Pop. City", "Population_Rural": "Pop. Kuntry" }
+    let data1 = [
+      {
+        name: 'Frozen yogurt',
+        carbs: 24,
+        protein: '4.0',
+        comments: 'Super tasty'
+      },
+      {
+        name: 'Ice cream sandwich',
+        carbs: 223,
+        protein: '8.0',
+        comments: 'CREEEAMY'
+      },
+      {
+        name: 'Eclair',
+        carbs: 623,
+        protein: '23.6',
+        comments: 'French treat'
+      },
+      {
+        name: 'Pop Tart',
+        carbs: 123,
+        protein: '56.02',
+        comments: 'What we used to call your mom'
+      }
+    ]
+    let data = MyExamples.getCountriesData()
+    table3.innerHTML = this.createDataTableHtml(data, "Desert Nutrition", columnTitles)
+    // table3.innerHTML = this.createDataTableHtml(data, "Countries")
+    const dataTable3 = new MDCDataTable(this.shadowRoot.querySelector('.mdc-data-table3'));
+    dataTable3.listen('MDCDataTable:sorted', (event) => {
       const data = event.detail;
       this.sortTableByColumn(event.currentTarget, data.columnId, data.sortValue)
     })
+    // dataTable3.getHeaderCells()[1].click() // select: column-2 asc
+  }
 
-    // send click to sort by carbs
-    dataTable2.getHeaderCells()[2].click()
+  dataTableAddRow(data, table) {
+    // add row to table
+    let rowHtml = `
+      <tr class="mdc-data-table__row">
+        <td class="mdc-data-table__cell">${data.name}</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
+          ${data.carbs}
+        </td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
+          ${data.protein}
+        </td>
+        <td class="mdc-data-table__cell">
+          ${data.comments}
+        </td>
+      </tr>
+
+    `;
+    let html = table.querySelector('table tbody').innerHTML
+    table.querySelector('table tbody').innerHTML = ""
+    table.querySelector('table tbody').innerHTML = html + rowHtml
+  }
+
+  createDataTableHeaderRowHtml(titleId, title) {
+    return `
+    <th
+      class="
+        mdc-data-table__header-cell 
+        mdc-data-table__header-cell--with-sort"
+      role="columnheader"
+      scope="col"
+      aria-sort="none"
+      data-column-id="${titleId}"
+    >
+      <div class="mdc-data-table__header-cell-wrapper">
+        <div class="mdc-data-table__header-cell-label">
+          ${title}
+        </div>
+        <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button"
+                aria-label="Sort by ${titleId}" aria-describedby="${titleId}-status-label">arrow_upward</button>
+        <div class="mdc-data-table__sort-status-label" aria-hidden="true" id="${titleId}-status-label">
+        </div>
+      </div>
+    </th>
+    `;
+  }
+
+  createDataTableDataRowHtml(data, key) {
+    let value = data[key]
+
+    // Check if data is a number
+    // if (Number(value) === value && value % 1 !== 0) {
+    if (isNumeric(value) || !isNaN(value)) {
+      // if (isNumeric(value) || (Number(value) == value && value % 1 !== 0)) {
+      return `
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
+          ${value}
+        </td>
+    `;
+    }
+
+    return `
+        <td class="mdc-data-table__cell">${value}</td>
+    `;
+  }
+
+  // Leave off columnTitles array to use the keys as the column titles
+  createDataTableHtml(data, tableTitle = "Data Table", columnTitles) {
+
+    let html = `
+      <h3>${tableTitle}</h3>
+      <table class="mdc-data-table__table" aria-label="${tableTitle}">
+        <thead>
+      `
+
+    // Build the header
+    html += `<tr class="mdc-data-table__header-row">`
+    Object.keys(data[0]).forEach((key, idx) => {
+      let columnTitle = key
+
+      // If columnTitles is defined, use it and only include the columns that are defined.
+      if (columnTitles && columnTitles[key]) {
+        columnTitle = columnTitles[key]
+        html += this.createDataTableHeaderRowHtml(key, columnTitle)
+      }
+
+      // If columnTitles is not defined, use the key as the column title and include all columns.
+      if (!columnTitles) {
+        html += this.createDataTableHeaderRowHtml(key, columnTitle)
+      }
+    })
+
+    html += `
+            </tr>
+          </thead>
+    `
+
+    // Build the Data Rows
+    html += `
+        <tbody class="mdc-data-table__content">`
+    data.forEach((row) => {
+      html += `<tr class="mdc-data-table__row">`
+      Object.keys(row).forEach((key) => {
+        let columnTitle = key
+
+        // If columnTitles is defined, use it and only include the columns that are defined.
+        if (columnTitles && columnTitles[key]) {
+          columnTitle = columnTitles[key]
+          html += this.createDataTableDataRowHtml(row, key)
+        }
+
+        // If columnTitles is not defined, use the key as the column title and include all columns.
+        if (!columnTitles) {
+          html += this.createDataTableDataRowHtml(row, key)
+        }
+
+      })
+      html += `</tr>`
+    })
+    html += `</tbody>`
+
+    html += `
+      </table>
+    `
+
+    return html
   }
 
   sortTableByColumn(table, column, order) {
-    // get table content
-    // let headings = this.shadowRoot.querySelector('.mdc-data-table2 thead').querySelectorAll("th")
+    // get header & table content
     let headings = table.querySelector('table thead').querySelectorAll("th")
-    // const content = this.shadowRoot.querySelector('.mdc-data-table2 tbody').querySelectorAll("tr")
     const content = table.querySelector('table tbody').querySelectorAll("tr")
 
-    // find ordinal of column
+    // find index of `column` in `headings`
     let headingColumnId = Array.from(headings).map((heading) => {
       return heading.dataset.columnId
     })
     let sortColumnIndex = headingColumnId.indexOf(column)
 
-
+    // Sort content
     let newContent = Array.from(content).sort((a, b) => {
-
       let aVal = Array.from(a.querySelectorAll("td"))[sortColumnIndex].innerText
       let bVal = Array.from(b.querySelectorAll("td"))[sortColumnIndex].innerText
 
-      // let aVal = a.querySelector(`[data-column-id=${column}]`).innerText
-      // let bVal = b.querySelector(`[data-column-id=${column}]`).innerText
-
-      // check if need to convert to numbers
+      // Check if need to convert to numbers
       if (a.querySelectorAll("td")[sortColumnIndex].classList.contains("mdc-data-table__cell--numeric")) {
         aVal = Number(aVal)
         bVal = Number(bVal)
@@ -99,7 +274,7 @@ class MyExamples extends LitElement {
         }
       }
 
-      // Text
+      // Text comparison
       if (order == "ascending") {
         return aVal.localeCompare(bVal)
       } else {
@@ -109,7 +284,6 @@ class MyExamples extends LitElement {
 
     table.querySelector('table tbody').innerHTML = ""
     table.querySelector('table tbody').append(...newContent)
-    // content.innerHtml = newContent
   }
 
   static getCountriesData() {
@@ -355,12 +529,14 @@ class MyExamples extends LitElement {
 
         <!-- Material Design Table 2 -->
 
-        <div class="mdc-data-table2">
+        <!-- <div class="mdc-data-table2">
           <table class="mdc-data-table__table" aria-label="Dessert calories">
             <thead>
               <tr class="mdc-data-table__header-row">
                 <th
-                  class="mdc-data-table__header-cell mdc-data-table__header-cell--with-sort"
+                  class="
+                    mdc-data-table__header-cell 
+                    mdc-data-table__header-cell--with-sort"
                   role="columnheader"
                   scope="col"
                   aria-sort="none"
@@ -475,8 +651,9 @@ class MyExamples extends LitElement {
               </tr>
             </tbody>
           </table>
-        </div>
+        </div> -->
 
+        <div class="mdc-data-table3"></div>
 
       </div>
     `

@@ -1,6 +1,6 @@
 import { authService } from "../authenticationService";
 
-class FetchTodoExample extends HTMLElement {
+class FetchedJsonItem extends HTMLElement {
 
   static get componentStyle() {
     return `
@@ -57,7 +57,7 @@ class FetchTodoExample extends HTMLElement {
     const template = document.createElement('template');
     template.innerHTML = `
       <style>
-        ${FetchTodoExample.componentStyle}
+        ${FetchedJsonItem.componentStyle}
       </style>
 
       <label id="display" class="item">
@@ -240,4 +240,4 @@ class FetchTodoExample extends HTMLElement {
   }
 
 }
-customElements.define('fetch-todo-example', FetchTodoExample);
+customElements.define('fetched-json-item', FetchedJsonItem);

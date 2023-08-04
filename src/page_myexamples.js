@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { styles } from './style_scripts/modified-material-components-web.min.css.js';
 import './components/my-counter.js';
 import './components/my-element.js';
-import './components/fetch-todo-example.js';
+import './components/fetched-json-item.js';
 
 import '../node_modules/smart-webcomponents/source/smart.element.js';
 import '../node_modules/smart-webcomponents/source/smart.data.js';
@@ -154,6 +154,12 @@ class MyExamples extends LitElement {
     table.disabled = false;
   }
 
+  //////////////////////////////////////
+  // Generate Tables Programmatically //
+  //////////////////////////////////////
+
+  // Maybe put these in a utlities for tables
+
   AddRowToMaterialDesignDataTable(data, table) {
     // add row to table
     let rowHtml = `
@@ -176,11 +182,29 @@ class MyExamples extends LitElement {
     table.querySelector('table tbody').innerHTML = html + rowHtml
   }
 
-  createMaterialDesignDataTableHeaderRowHtml(titleId, title) {
+  createMaterialDesignDataTableHeaderRowHtml(titleId, title, isNumeric) {
+    let titleSnippetHtml = `
+      <div class="mdc-data-table__header-cell-label">
+        ${title}
+      </div>
+    `
+
+    let buttonSnippetHtml = `
+      <button class="
+        mdc-icon-button material-icons 
+        mdc-data-table__sort-icon-button"
+        aria-label="Sort by ${titleId}" 
+        aria-describedby="${titleId}-status-label"
+      >
+        arrow_upward
+      </button>
+    `
+
     return `
     <th
       class="
-        mdc-data-table__header-cell 
+        mdc-data-table__header-cell
+        ${isNumeric ? " mdc-data-table__header-cell--numeric " : ""}
         mdc-data-table__header-cell--with-sort"
       role="columnheader"
       scope="col"
@@ -188,27 +212,25 @@ class MyExamples extends LitElement {
       data-column-id="${titleId}"
     >
       <div class="mdc-data-table__header-cell-wrapper">
-        <div class="mdc-data-table__header-cell-label">
-          ${title}
-        </div>
-        <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button"
-                aria-label="Sort by ${titleId}" aria-describedby="${titleId}-status-label">arrow_upward</button>
-        <div class="mdc-data-table__sort-status-label" aria-hidden="true" id="${titleId}-status-label">
-        </div>
+        <div class="mdc-data-table__sort-status-label" aria-hidden="true" id="${titleId}-status-label"></div>
+        ${isNumeric // swaps order of button and title for numbers
+        ? buttonSnippetHtml + titleSnippetHtml
+        : titleSnippetHtml + buttonSnippetHtml}
       </div>
     </th>
     `;
   }
 
-  createMaterialDesignDataTableDataRowHtml(data, key) {
-    let value = data[key]
+  createMaterialDesignDataTableDataRowHtml(rowData, key) {
+    let value = rowData[key]
 
     // Check if data is a number
-    // if (Number(value) === value && value % 1 !== 0) {
     if (isNumeric(value) || !isNaN(value)) {
       // if (isNumeric(value) || (Number(value) == value && value % 1 !== 0)) {
       return `
-        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
+        <td class="
+          mdc-data-table__cell 
+          mdc-data-table__cell--numeric">
           ${value}
         </td>
     `;
@@ -232,16 +254,25 @@ class MyExamples extends LitElement {
     html += `<tr class="mdc-data-table__header-row">`
     Object.keys(data[0]).forEach((key, idx) => {
       let columnTitle = key
+      let value = data[0][key]
 
       // If columnTitles is defined, use it and only include the columns that are defined.
       if (columnTitles && columnTitles[key]) {
         columnTitle = columnTitles[key]
-        html += this.createMaterialDesignDataTableHeaderRowHtml(key, columnTitle)
+        html += this.createMaterialDesignDataTableHeaderRowHtml(
+          key,
+          columnTitle,
+          isNumeric(value) || !isNaN(value)
+        )
       }
 
       // If columnTitles is not defined, use the key as the column title and include all columns.
       if (!columnTitles) {
-        html += this.createMaterialDesignDataTableHeaderRowHtml(key, columnTitle)
+        html += this.createMaterialDesignDataTableHeaderRowHtml(
+          key,
+          columnTitle,
+          isNumeric(value) || !isNaN(value)
+        )
       }
     })
 
@@ -253,20 +284,20 @@ class MyExamples extends LitElement {
     // Build the Data Rows
     html += `
         <tbody class="mdc-data-table__content">`
-    data.forEach((row) => {
+    data.forEach((rowData) => {
       html += `<tr class="mdc-data-table__row">`
-      Object.keys(row).forEach((key) => {
+      Object.keys(rowData).forEach((key) => {
         let columnTitle = key
 
         // If columnTitles is defined, use it and only include the columns that are defined.
         if (columnTitles && columnTitles[key]) {
           columnTitle = columnTitles[key]
-          html += this.createMaterialDesignDataTableDataRowHtml(row, key)
+          html += this.createMaterialDesignDataTableDataRowHtml(rowData, key)
         }
 
         // If columnTitles is not defined, use the key as the column title and include all columns.
         if (!columnTitles) {
-          html += this.createMaterialDesignDataTableDataRowHtml(row, key)
+          html += this.createMaterialDesignDataTableDataRowHtml(rowData, key)
         }
 
       })
@@ -400,7 +431,7 @@ class MyExamples extends LitElement {
 
         </style>
         
-        This is the page for Some Examples
+        This is the page for Some Examples of Counter, MyElement, Tables, FetchedJsonItem
         <br>
         
         <!-- My-Counter -->
@@ -412,8 +443,8 @@ class MyExamples extends LitElement {
         <br>
 
         <!-- Fetch component example -->
-        <!-- <fetch-todo-example url="http://localhost:8081/todo_echo"></fetch-todo-example> -->
-        <fetch-todo-example url="http://localhost:8081/libraryApi/fetchBookInfo/UUID2:Role.Book@00000000-0000-0000-0000-000000001100"></fetch-todo-example>
+        <!-- <fetched-json-item url="http://localhost:8081/todo_echo"></fetched-json-item> -->
+        <fetched-json-item url="http://localhost:8081/libraryApi/fetchBookInfo/UUID2:Role.Book@00000000-0000-0000-0000-000000001100"></fetched-json-item>
         <br>
 
         <!-- <smart-table id="table"></smart-table> -->
@@ -450,7 +481,7 @@ class MyExamples extends LitElement {
 
 
         <!-- Material Design table -->
-        <h1>Material Design Table</h1>
+        <h1>Material Design Table - HTML</h1>
 
         <div class="mdc-data-table">
           <div class="mdc-data-table__table-container">
@@ -584,9 +615,8 @@ class MyExamples extends LitElement {
                       Dessert
                     </div>
                     <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button"
-                            aria-label="Sort by dessert" aria-describedby="dessert-status-label">arrow_upward</button>
-                    <div class="mdc-data-table__sort-status-label" aria-hidden="true" id="dessert-status-label">
-                    </div>
+                    aria-label="Sort by dessert" aria-describedby="dessert-status-label">arrow_upward</button>
+                    <div class="mdc-data-table__sort-status-label" aria-hidden="true" id="dessert-status-label"></div>
                   </div>
                 </th>
                 <th
@@ -603,14 +633,17 @@ class MyExamples extends LitElement {
                   <div class="mdc-data-table__header-cell-wrapper">
                     <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button"
                             aria-label="Sort by carbs" aria-describedby="carbs-status-label">arrow_upward</button>
+                    <div class="mdc-data-table__sort-status-label" aria-hidden="true" id="carbs-status-label"></div>
                     <div class="mdc-data-table__header-cell-label">
                       Carbs (g)
                     </div>
-                    <div class="mdc-data-table__sort-status-label" aria-hidden="true" id="carbs-status-label"></div>
                   </div>
                 </th>
                 <th
-                  class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric mdc-data-table__header-cell--with-sort"
+                  class="
+                    mdc-data-table__header-cell 
+                    mdc-data-table__header-cell--numeric 
+                    mdc-data-table__header-cell--with-sort"
                   role="columnheader"
                   scope="col"
                   aria-sort="none"

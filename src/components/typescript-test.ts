@@ -105,14 +105,14 @@ class TaskElement extends LitElement {
   @property()
   private bookId: string  = ""; // "UUID2:Role.Book@00000000-0000-0000-0000-000000001100"
 
+  private clientIpAddress: string | null;
+  private authenticationToken: string | null;
+
   // @property({ type: Boolean }) // exists(true) or not(false), value is not used
   // private autoRun: Boolean = false
   
   // @property()
   // private autoRun: Boolean = false;  // note: even if type is Boolean, it type be a string "true" or "false" bc property decorator type-definition is not used
-
-  clientIpAddress: string | null;
-  authenticationToken: string | null;
 
   constructor() {
     super();
@@ -138,14 +138,14 @@ class TaskElement extends LitElement {
         let request = new Request(
           `http://localhost:8081/libraryApi/fetchBookInfo/${bookId}`, {
             method: 'GET',
-            // body: JSON.stringify(todo), // for POSTs/PUTs
             headers: headers
+            // body: JSON.stringify(todo), // for POSTs/PUTs
           }
         );
 
         const response: Response = await fetch(request)
         if (!response.ok) {
-          let error = await response.text();
+          let error = await response.text()
           let errorOptions: ErrorOptions = {
             cause: {
               status: response.status,
@@ -153,7 +153,7 @@ class TaskElement extends LitElement {
               url: response.url,
             }
           }
-          throw new Error(error, errorOptions);
+          throw new Error(error, errorOptions)
         }
 
         return response.json()
@@ -170,7 +170,6 @@ class TaskElement extends LitElement {
   }
 
   render() {
-
     return html`
       <div>Book Info: ${this.bookId}</div>
       ${this._apiTask.render({
@@ -184,8 +183,8 @@ class TaskElement extends LitElement {
         ,
         error: (e) => html`
           <p style="color: red;">Error loading info</p>
-          cause: <pre>${JSON.stringify((e as Error).cause, null, 2)}</pre>
-          message: <pre>${(e as Error).message}</pre>`
+          error cause: <pre>${JSON.stringify((e as Error).cause, null, 2)}</pre>
+          error message: <pre>${(e as Error).message}</pre>`
         ,
       })}
     `;

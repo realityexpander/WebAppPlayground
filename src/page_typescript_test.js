@@ -20,7 +20,7 @@ class TypescriptTest extends LitElement {
           }
         </style>
         
-        <h1>This is the page for Typescript test</h1>
+        <h1>This is the page for TypescriptTest</h1>
         <br>
         <br>
         
@@ -41,6 +41,7 @@ class TypescriptTest extends LitElement {
         <br>
         <task-element bookId="UUID2:Role.Book@00000000-0000-0000-0000-000000001100"></task-element>
         <br>
+
 
 
       </div>

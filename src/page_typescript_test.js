@@ -1,13 +1,7 @@
 import { LitElement, html } from 'lit';
 import { styles } from './style_scripts/modified-material-components-web.min.css.js';
-import './components/simple-greeting.js';
 
-
-function isNumeric(str) {
-  if (typeof str != "string") return false // we only process strings!  
-  return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
-    !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
-}
+import './components/typescript-test.js';
 
 class TypescriptTest extends LitElement {
 
@@ -40,7 +34,13 @@ class TypescriptTest extends LitElement {
         <root-element name="root1"></root-element>
         <br>
 
-
+        <!-- Task -->
+        <h3>@lit-labs/Task</h3>
+        <!-- <task-element></task-element> -->
+        <task-element bookId="UUID2:Role.Book@00000000-0000-0000-0000-000000001200"></task-element>
+        <br>
+        <task-element bookId="UUID2:Role.Book@00000000-0000-0000-0000-000000001100"></task-element>
+        <br>
 
 
       </div>

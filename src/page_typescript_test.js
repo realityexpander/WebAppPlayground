@@ -42,7 +42,9 @@ class TypescriptTest extends LitElement {
         <task-element bookId="UUID2:Role.Book@00000000-0000-0000-0000-000000001100"></task-element>
         <br>
 
-
+        <!-- Attribute Test -->
+        <attr-test .srcObject="100" someId="1100" someId2="1200" someId3="1300">Attributes</attr-test>
+        <br>
 
       </div>
     `

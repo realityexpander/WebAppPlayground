@@ -190,3 +190,55 @@ class TaskElement extends LitElement {
     `;
   }
 }
+
+@customElement('attr-test')
+class AttrTest extends LitElement {
+  @property({attribute: true})
+  private someId: string  = ""; // "1100"
+
+  @property({attribute: false})  // will not update the variable when the attribute changes
+  private someId2: string  = ""; // "1200"
+
+  @property({ type: Number, reflect: true })
+  private someId3: number  = 0; // "1300"
+
+  @property()
+  private srcObject: Number | null = null;
+
+  @property()
+  prop4: String
+
+  @property()
+  prop3: Boolean
+
+  constructor() {
+    super();
+    this.prop4 = 'pie';
+    this.prop3 = true;
+  }
+
+  render() {
+    return html`
+      <div>someId: ${this.someId}</div>
+      <div>someId attribute: ${this.getAttribute('someId')}</div>
+      <div>someId2: ${this.someId2}</div>  <!-- will be empty -->
+      <div>someId2 attribute: ${this.getAttribute('someId2')}</div>  <!-- will NOT be empty -->
+      <div>someId3: ${this.someId3}</div> <!-- will NOT be empty -->
+      <div>someId3 attribute: ${this.getAttribute('someId3')}</div> <!-- will NOT be empty -->
+      <div>srcObject: ${this.srcObject}</div>
+
+      <!-- property binding -->
+      <div>
+        property binding
+        <input type="text" .value="${this.prop4}" @input="${(e: any) => this.prop4 = e.target.value}">
+      </div>
+      <p>${this.prop4}</p>
+
+      <!-- boolean attribute binding -->
+      <div>
+        boolean attribute binding
+        <input type="text" ?disabled="${this.prop3}"/>
+      </div>
+    `;
+  }
+}

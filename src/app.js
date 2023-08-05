@@ -110,6 +110,12 @@ class App extends Router(LitElement) {
                 import: () => import("./page_typescript_test.js"),
                 secured: true
             },
+            {
+                path: "/my-virtualizer",
+                component: "page-my-virtualizer",
+                import: () => import("./page_my_virtualizer.js"),
+                secured: true
+            },
             // Using 'category' variable, & is required.
             {
                 path: "/news/:category",

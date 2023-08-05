@@ -26,12 +26,22 @@ class TypescriptTest extends LitElement {
           }
         </style>
         
-        This is the page for Typescript test
+        <h1>This is the page for Typescript test</h1>
+        <br>
         <br>
         
-        <!-- Typescript Test -->
-        <simple-greeting></simple-greeting>
+        <!-- Typescript component -->
+        <h3>@lit element using TypeScript</h3>
+        <simple-greeting name="Freak"></simple-greeting>
         <br>
+        
+        <!-- Context -->
+        <h3>@lit-labs/Context</h3>
+        <root-element name="root1"></root-element>
+        <br>
+
+
+
 
       </div>
     `

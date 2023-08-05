@@ -36,6 +36,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@lit-labs/context": "^0.3.3",
     "@lit/reactive-element": "^1.6.1",
     "@material/data-table": "^14.0.0",
     "@material/drawer": "^14.0.0",

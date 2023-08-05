@@ -1,4 +1,4 @@
-import {html, css, LitElement} from 'lit';
+import {html, css, LitElement, PropertyValueMap} from 'lit';
 import {customElement, property, state} from 'lit/decorators.js';
 
 // Context
@@ -105,6 +105,12 @@ class TaskElement extends LitElement {
   @property()
   private bookId: string  = ""; // "UUID2:Role.Book@00000000-0000-0000-0000-000000001100"
 
+  // @property({ type: Boolean }) // exists(true) or not(false), value is not used
+  // private autoRun: Boolean = false
+  
+  // @property()
+  // private autoRun: Boolean = false;  // note: even if type is Boolean, it type be a string "true" or "false" bc property decorator type-definition is not used
+
   clientIpAddress: string | null;
   authenticationToken: string | null;
 
@@ -142,9 +148,9 @@ class TaskElement extends LitElement {
           let error = await response.text();
           let errorOptions: ErrorOptions = {
             cause: {
-              // message: error,
               status: response.status,
-              statusText: response.statusText
+              statusText: response.statusText,
+              url: response.url,
             }
           }
           throw new Error(error, errorOptions);
@@ -152,23 +158,35 @@ class TaskElement extends LitElement {
 
         return response.json()
       },
-      args: () => [this.bookId]
+      args: () => [this.bookId],
+      autoRun: true,  // true = run the task automatically when the `args` change
+      // autoRun: false,  // false = manually `run` the task (ignores the `args` change)
     }
   );
 
+  protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    super.firstUpdated(_changedProperties);
+    // this._apiTask.run(); // Run the task manually
+  }
+
   render() {
+
     return html`
       <div>Book Info: ${this.bookId}</div>
       ${this._apiTask.render({
+        // initial: () => html`<div>Initializing...</div>`, // Placeholder while the task is initializing
+        initial: () => html`
+          <button @click=${() => this._apiTask.run()}>Load</button>` // only shown when `autoRun` is false
+        ,
         pending: () => html`Loading user info...`,
         complete: (data) => html`
-          <pre>${JSON.stringify(data, null, 2)}</pre>
-        `,
+          <pre>${JSON.stringify(data, null, 2)}</pre>`
+        ,
         error: (e) => html`
           <p style="color: red;">Error loading info</p>
           cause: <pre>${JSON.stringify((e as Error).cause, null, 2)}</pre>
-          message: <pre>${(e as Error).message}</pre>
-        `,
+          message: <pre>${(e as Error).message}</pre>`
+        ,
       })}
     `;
   }

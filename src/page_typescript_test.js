@@ -36,7 +36,7 @@ class TypescriptTest extends LitElement {
 
         <!-- Task -->
         <h3>@lit-labs/Task</h3>
-        <!-- <task-element></task-element> -->
+        <!-- will cause error: -->
         <task-element bookId="UUID2:Role.Book@00000000-0000-0000-0000-000000001200"></task-element>
         <br>
         <task-element bookId="UUID2:Role.Book@00000000-0000-0000-0000-000000001100"></task-element>

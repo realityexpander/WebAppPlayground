@@ -173,3 +173,19 @@ Basic Auth
 ### Deploy using Docker
 - https://codersee.com/easily-deploy-ktor-server-with-docker/#elementor-action%3Aaction%3Dpopup%3Aclose%26settings%3DeyJkb19ub3Rfc2hvd19hZ2FpbiI6InllcyJ9
   
+
+### More documents
+- https://betterprogramming.pub/how-to-build-a-web-component-with-lit-elements-d88684a46e56
+- DataTables
+  - https://m2.material.io/components/data-tables/web#data-tables 
+  - https://www.htmlelements.com/demos/table/basic/
+- Templates
+  - Album template
+    - https://www.htmlelements.com/demos/page-templates/album/ 
+  - Shop
+    - https://www.htmlelements.com/demos/page-templates/cart-checkout/cart/index.htm
+  - Smart Grid
+    - https://www.htmlelements.com/demos/grid/column-dynamic-template/ 
+- Material Design
+  - https://m2.material.io/develop/web/guides/importing-js
+  -  

@@ -25,7 +25,6 @@ class PageMyVirtualizer extends LitElement {
   render() {
     return html`
       <div class="wrapper">
-
         <style>
           img {
             /* rounded corners */
@@ -37,9 +36,12 @@ class PageMyVirtualizer extends LitElement {
         </style>
         
         <h1>This is the page for MyVirtualizer</h1>
+        <h3>Should be called "FastList", "LitList" or "QuickList"</h3>
+        <br>
         <br>
         <h3>@lit-labs/virtualizer</h3>
-        <!-- https://www.youtube.com/watch?v=ay8ImAgO9ik All About Lit Virtualizer -->
+        <a href="https://www.youtube.com/watch?v=ay8ImAgO9ik" target="_blank">Lit Labs Virtualizer</a><br> 
+        <a href="https://codesandbox.io/s/litelement-typescript-litvirtualizer-sxjsww?file=/src/x-row-scroller.ts" target="_blank">Horizontal Scroller</a>
         <!-- <my-virtualizer bookId="UUID2:Role.Book@00000000-0000-0000-0000-000000001200"></my-virtualizer> -->
         <br>
         <br>
@@ -53,6 +55,7 @@ class PageMyVirtualizer extends LitElement {
         -->
       
 
+        <!-- simple example -->
         <!--
         <img src="https://picsum.photos/seed/1/200/300.jpg" />
         <lit-virtualizer
@@ -65,7 +68,6 @@ class PageMyVirtualizer extends LitElement {
 
         <!-- <my-virtualizer bookId="UUID2:Role.Book@00000000-0000-0000-0000-000000009999"></my-virtualizer> -->
         
-
         <!-- for the standard lit-virtualized element -->
         <button 
           @click=${() => {
@@ -85,8 +87,15 @@ class PageMyVirtualizer extends LitElement {
         <lit-virtualizer id="virtualizer1" 
           scroller style="height: 350px; width: 100%; overflow: auto;"
           .items=${Array.from({ length: 1000 }, (_, i) => i)}
-          .renderItem=${(item: number) => html`<div><img src="https://picsum.photos/seed/${item + 1}/200/300.jpg" /><p>${item}</p></div>`}
+          .renderItem=${(item: number) => 
+            html`
+            <div>
+              <img src="https://picsum.photos/seed/${item + 1}/200/300.jpg" />
+              <p>${item}</p>
+            </div>`
+          }
         ></lit-virtualizer>
+        <br>
 
 
         <!-- This is using the virtualize function & the scrollToListItem -->
@@ -125,7 +134,7 @@ class PageMyVirtualizer extends LitElement {
   scrollToListItem(idx: number) {
     (this.list as any)[virtualizerRef]
       .element(idx)
-      ?.scrollIntoView({ behavior: 'smooth' });
+      ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
 // customElements.define('page-my-virtualizer', PageMyVirtualizer);  // js

@@ -18,8 +18,6 @@ class MyVirtualizer extends LitElement {
   // }
 
   render() {
-    // Not yet implemented
-
     return html`
       <script>
         import { LitVirtualizer } from '@lit-labs/virtualizer';

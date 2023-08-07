@@ -25,5 +25,7 @@
   },
   "include": [
     "./src/**/*.ts",
+    "src/components/my-virtualizer.js",
+    "src/components/import-virtualizer.js",
   ]
 }

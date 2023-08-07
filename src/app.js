@@ -111,9 +111,9 @@ class App extends Router(LitElement) {
                 secured: true
             },
             {
-                path: "/my-virtualizer",
-                component: "page-my-virtualizer",
-                import: () => import("./page_my_virtualizer.js"),
+                path: "/virtualizers",
+                component: "page-virtualizers",
+                import: () => import("./page_virtualizers.js"),
                 secured: true
             },
             // Using 'category' variable, & is required.

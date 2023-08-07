@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, css } from 'lit';
 import { styles } from './style_scripts/modified-material-components-web.min.css.js';
 import { customElement, property, query } from 'lit/decorators.js';
 
@@ -8,12 +8,44 @@ import { flow } from '@lit-labs/virtualizer/layouts/flow.js';
 import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
 import { masonry } from '@lit-labs/virtualizer/layouts/masonry.js';
 import { repeat } from 'lit/directives/repeat.js';
-import './components/my-virtualizer.js';
 
-@customElement('page-my-virtualizer')  // ts
-class PageMyVirtualizer extends LitElement {
+import './components/simple-dialog.js';
+import './components/import-virtualizer.js';
 
-  static styles = styles;
+@customElement('page-virtualizers')  // ts
+class PageVirtualizers extends LitElement {
+
+  static styles = [styles,
+    css`
+      :host {
+        display: block;
+        padding: 10px;
+      }
+      /*
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      */
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        /* width: 100%; */
+        max-width: 600px;
+      }
+      li {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+      li:nth-child(even) {
+        background-color: #eee;
+      }
+      li:hover {
+        background-color: #ddd;
+      }
+    `];
 
   firstUpdated() {
   }
@@ -35,7 +67,7 @@ class PageMyVirtualizer extends LitElement {
           }
         </style>
         
-        <h1>This is the page for MyVirtualizer</h1>
+        <h1>This is the page for Virtualizers</h1>
         <h3>Should be called "FastList", "LitList" or "QuickList"</h3>
         <br>
         <br>
@@ -46,7 +78,10 @@ class PageMyVirtualizer extends LitElement {
         <br>
         <br>
 
-        <!-- This is the original naive version that will bog-down rendering performance any browser -->
+        <h3>Dialog</h3>
+        <simple-dialog></simple-dialog>
+
+        <!-- This is the original naîve version that will bog-down rendering performance any browser -->
         <!-- 
           ${repeat(
             Array.from({ length: 1000 }, (_, i) => i),
@@ -66,8 +101,6 @@ class PageMyVirtualizer extends LitElement {
         <br>
         -->
 
-        <!-- <my-virtualizer bookId="UUID2:Role.Book@00000000-0000-0000-0000-000000009999"></my-virtualizer> -->
-        
         <!-- for the standard lit-virtualized element -->
         <button 
           @click=${() => {
@@ -137,4 +170,4 @@ class PageMyVirtualizer extends LitElement {
       ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
-// customElements.define('page-my-virtualizer', PageMyVirtualizer);  // js
+// customElements.define('page-virtualizers', PageVirtualizers);  // js

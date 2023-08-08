@@ -71,7 +71,6 @@ class Home extends LitElement {
     })
       .then(response => {
         if (response.ok == false) throw new Error(response.statusText);
-
         return response.json()
       })
       .then(data => {
@@ -98,6 +97,7 @@ class Home extends LitElement {
         <a href="/trade/123">Trade</a>
         <a href="/news/tech">News</a>
         <a href="/simpletables">SimpleTables</a>
+        <a href="/virtualizers">Virtualizers</a>
         <br>
         <br>
 

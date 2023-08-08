@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { styles } from './style_scripts/modified-material-components-web.min.css.js';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 
 import { LitVirtualizer } from '@lit-labs/virtualizer';
 import { virtualize, virtualizerRef } from '@lit-labs/virtualizer/virtualize.js';
@@ -11,6 +11,12 @@ import { repeat } from 'lit/directives/repeat.js';
 
 import './components/simple-dialog.js';
 import './components/import-virtualizer.js';
+import { SimpleDialog } from './components/simple-dialog.js';
+
+// async function getTextData(): string {
+//   const response = await fetch('https://baconipsum.com/api/?type=all-meat&paras=100&start-with-lorem=1');
+//   return response.text();
+// }
 
 @customElement('page-virtualizers')  // ts
 class PageVirtualizers extends LitElement {
@@ -47,12 +53,45 @@ class PageVirtualizers extends LitElement {
       }
     `];
 
-  firstUpdated() {
-  }
-
   @query('ul')  // gets a reference to the <ul> element in the template
   list: HTMLUListElement | undefined;
   data: {text: string}[] = new Array(100).fill('').map((i, n) => ({text: `Item ${n}`}));
+
+  @state()
+  dialogResult: string | undefined;
+
+  firstUpdated() {
+    // setup the dialog result callback
+    // note: assigning a function to an attribute is ok. Also can assign an object, not just a string or boolean.
+    (this.shadowRoot?.querySelector("simple-dialog") as SimpleDialog).resultCallback = 
+      (result: string) => {
+        console.log("dialog resultCallback: " + result)
+        this.dialogResult = result;
+      }
+    
+    let data = this.getTextData().then((data) => {
+      console.log("data=", data)
+    })
+  }
+
+  async getJsonData(): Promise<any> {
+    const response = await fetch('/src/app-json.json')
+    return await response.json()
+  }
+
+  async getTextData(): Promise<string> {
+    const response = await fetch('/src/app-json.json')
+    return await response.text()
+  }
+
+  dialogResultString() {
+    let value = this.dialogResult;
+    if(value == "btn_cancel") {
+      return "Clicked Cancel";
+    } else if(value == "btn_confirm") {
+      return "Clicked Confirm";
+    }
+  }
 
   render() {
     return html`
@@ -74,12 +113,14 @@ class PageVirtualizers extends LitElement {
         <h3>@lit-labs/virtualizer</h3>
         <a href="https://www.youtube.com/watch?v=ay8ImAgO9ik" target="_blank">Lit Labs Virtualizer</a><br> 
         <a href="https://codesandbox.io/s/litelement-typescript-litvirtualizer-sxjsww?file=/src/x-row-scroller.ts" target="_blank">Horizontal Scroller</a>
-        <!-- <my-virtualizer bookId="UUID2:Role.Book@00000000-0000-0000-0000-000000001200"></my-virtualizer> -->
         <br>
         <br>
 
         <h3>Dialog</h3>
         <simple-dialog></simple-dialog>
+        <br>
+        <p>${this.dialogResultString()}</p>
+        <br>
 
         <!-- This is the original naîve version that will bog-down rendering performance any browser -->
         <!-- 

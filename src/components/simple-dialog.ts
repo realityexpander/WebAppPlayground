@@ -1,4 +1,3 @@
-// import { html, css, LitElement, PropertyValueMap } from 'lit';
 import { html, css, LitElement, PropertyValueMap } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 

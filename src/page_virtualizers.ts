@@ -10,13 +10,11 @@ import { masonry } from '@lit-labs/virtualizer/layouts/masonry.js';
 import { repeat } from 'lit/directives/repeat.js';
 
 import './components/simple-dialog.js';
-import './components/import-virtualizer.js';
 import { SimpleDialog } from './components/simple-dialog.js';
+import './components/import-virtualizer.js';
 
-// async function getTextData(): string {
-//   const response = await fetch('https://baconipsum.com/api/?type=all-meat&paras=100&start-with-lorem=1');
-//   return response.text();
-// }
+import './components/alert-dialog.js';
+import { AlertDialog } from './components/alert-dialog.js';
 
 @customElement('page-virtualizers')  // ts
 class PageVirtualizers extends LitElement {
@@ -60,6 +58,13 @@ class PageVirtualizers extends LitElement {
   @state()
   dialogResult: string | undefined;
 
+  // @query('alert-dialog')
+  @state()
+  alertDialogEl: HTMLElement | undefined;
+
+  @state()
+  alertDialog: AlertDialog | undefined;
+
   firstUpdated() {
     // setup the dialog result callback
     // note: assigning a function to an attribute is ok. Also can assign an object, not just a string or boolean.
@@ -72,6 +77,9 @@ class PageVirtualizers extends LitElement {
     let data = this.getTextData().then((data) => {
       console.log("data=", data)
     })
+
+    this.alertDialogEl = this.shadowRoot?.querySelector("alert-dialog") as HTMLElement;
+    this.alertDialog = this.alertDialogEl as AlertDialog;
   }
 
   async getJsonData(): Promise<any> {
@@ -92,7 +100,6 @@ class PageVirtualizers extends LitElement {
       return "Clicked Confirm";
     }
   }
-
   render() {
     return html`
       <div class="wrapper">
@@ -116,11 +123,21 @@ class PageVirtualizers extends LitElement {
         <br>
         <br>
 
-        <h3>Dialog</h3>
+        <h3>SimpleDialog</h3>
+        <button @click=${() => {
+            (this.shadowRoot?.querySelector("alert-dialog") as AlertDialog).openDialog()
+          }}>Open MDC Alert Dialog</button>
         <simple-dialog></simple-dialog>
         <br>
         <p>${this.dialogResultString()}</p>
         <br>
+
+        <h3>MDC Alert Dialog</h3>
+        <button @click=${() => { 
+            this.alertDialog?.openDialog() 
+          }}>Open MDC Alert Dialog</button>
+        <br>
+        <alert-dialog id="alert-dialog"></alert-dialog>
 
         <!-- This is the original naîve version that will bog-down rendering performance any browser -->
         <!-- 

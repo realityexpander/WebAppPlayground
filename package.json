@@ -43,6 +43,7 @@
     "@material/data-table": "^14.0.0",
     "@material/dialog": "^14.0.0",
     "@material/drawer": "^14.0.0",
+    "@material/form-field": "^14.0.0",
     "@material/menu": "^14.0.0",
     "@material/radio": "^14.0.0",
     "@material/ripple": "^14.0.0",

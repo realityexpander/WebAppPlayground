@@ -6,9 +6,11 @@ import { MDCDialog } from '@material/dialog/component.js';
 import { MDCRadio } from '@material/radio/component.js';
 import { MDCRipple } from '@material/ripple/component.js';
 import { MDCList } from '@material/list/component.js';
+import { MDCFormField } from '@material/form-field/component.js';
+import { ContextProviderEvent } from '@lit-labs/context/lib/controllers/context-provider.js';
 
 export interface AlertDialog extends HTMLElement {
-  resultCallback: (result: string) => void;
+  resultCallback: (result: AlertDialogResult) => void;
   openDialog: () => void;
 }
 
@@ -16,6 +18,11 @@ export declare var AlertDialog: {
   prototype: AlertDialog;
   new(): AlertDialog;
 };
+
+export interface AlertDialogResult {
+  action: string,
+  selection: [number, string, string] | null
+}
 
 @customElement('alert-dialog') // ts
 class AlertDialogImpl extends LitElement implements AlertDialog {
@@ -25,33 +32,45 @@ class AlertDialogImpl extends LitElement implements AlertDialog {
       .mdc-list-item {
         align-items: center;
       }
+
+      .mdc-form-field {
+        display:flex; 
+        flex-direction: column; 
+        align-items: flex-start;
+      }
+
+      .mdc-touch-target-wrapper {
+        display: inline-flex;
+        align-items: center;
+      }
     `
   ]
   
   // Note: can assign a function or object, not just a string or boolean.
   @property({type: Function})
-  resultCallback: (result: string) => void | undefined = () => {};
+  resultCallback: (result: AlertDialogResult) => void = () => {};
 
   @property()
-  result: any | undefined;
+  //result: [number, string, string] | undefined;
+  result: AlertDialogResult | undefined;
+  
+
+  @state()
+  private _selection: [number, string, string] = [-1, '', '']; // index, id, innerHTML of selected radio button
 
   // @query('.mdc-dialog') // gets a reference to the <dialog> element in the template
   @state() // gets a reference to the <dialog> element in the template
-  dialogEl!: HTMLDialogElement;
+  private _dialogEl!: HTMLDialogElement;
 
   @state()
-  dialog!: MDCDialog;
+  private _dialog!: MDCDialog;
 
-  constructor() {
-    super();
-    this.openDialog = this.openDialog.bind(this);
-    this.handleClosing = this.handleClosing.bind(this);
+  openDialog() {
+    this._dialog.open()
   }
 
   render() {
     return html`
-      <!-- <button id="openDialog" @click=${this.openDialog}>Open Dialog</button> -->
-      
       <!--
       <div class="mdc-dialog"
         role='alertdialog'
@@ -140,103 +159,82 @@ class AlertDialogImpl extends LitElement implements AlertDialog {
             <h2 class="mdc-dialog__title" id="my-dialog-title">
               Choose a Ringtone
             </h2>
-            <div class="mdc-dialog__content" id="my-dialog-content">
-              <ul class="mdc-list">
+            <div class="mdc-dialog__content" id="my-dialog-content" >
+              <div class="mdc-form-field mdc-form-field--nowrap">
 
-                <li class="mdc-list-item" tabindex="0">
-                  <span class="mdc-list-item__graphic">
-                    <div class="mdc-radio">
+                  <div class="mdc-touch-target-wrapper data-mdc-dialog-initial-focus">
+                    <div class="mdc-radio mdc-radio--touch">
                       <input class="mdc-radio__native-control"
                             type="radio"
                             id="input-radio-0"
                             name="radio-group"
-                            checked>
+                            checked> <!-- Note: Always default to the first item -->
                       <div class="mdc-radio__background">
                         <div class="mdc-radio__outer-circle"></div>
                         <div class="mdc-radio__inner-circle"></div>
                       </div>
+                      <div class="mdc-radio__ripple"></div>
                     </div>
-                  </span>
-                    <label id="radio-0-label"
-                    for="input-radio-0"
-                    class="mdc-list-item__text">
-                    None
-                  </label>
-                </li>
+                    <label id="label-radio-0"
+                      for="input-radio-0"
+                      class="mdc-list-item__text">
+                        None
+                    </label>
+                  </div>
 
-                <li class="mdc-list-item" tabindex="1">
-                  <span class="mdc-list-item__graphic">
-                    <div class="mdc-radio">
+                  <div class="mdc-touch-target-wrapper">
+                    <div class="mdc-radio mdc-radio--touch">
                       <input class="mdc-radio__native-control"
                             type="radio"
                             id="input-radio-1"
-                            name="radio-group"
-                            >
+                            name="radio-group">
                       <div class="mdc-radio__background">
                         <div class="mdc-radio__outer-circle"></div>
                         <div class="mdc-radio__inner-circle"></div>
                       </div>
+                      <div class="mdc-radio__ripple"></div>
                     </div>
-                  </span>
-                    <label id="radio-1-label"
-                    for="input-radio-1"
-                    class="mdc-list-item__text">
-                    Special
-                  </label>
-                </li>
+                    <label id="label-radio-1"
+                      for="input-radio-1"
+                      class="mdc-list-item__text">
+                        Special
+                    </label>
+                  </div>
 
-                <li class="mdc-list-item" tabindex="2">
                   <div class="mdc-touch-target-wrapper">
                     <div class="mdc-radio mdc-radio--touch">
                       <input class="mdc-radio__native-control" 
                           type="radio" 
                           id="input-radio-2" 
-                          name="radio-group" 
-                          checked>
+                          name="radio-group">
                       <div class="mdc-radio__background">
                         <div class="mdc-radio__outer-circle"></div>
                         <div class="mdc-radio__inner-circle"></div>
                       </div>
                       <div class="mdc-radio__ripple"></div>
                     </div>
-                  </div>
-                    <label id="radio-2-label"
+                    <label id="label-radio-2"
                       for="input-radio-2"
                       class="mdc-list-item__text">
-                      Weird Wars
+                        Weird Wars
                     </label>
-                </li>
-
-                <li class="mdc-list-item" tabindex="3">
-                  <div class="mdc-touch-target-wrapper">
-                    <div class="mdc-radio mdc-radio--touch">
-                      <input class="mdc-radio__native-control" 
-                          type="radio" 
-                          id="input-radio-3" 
-                          name="radio-group" 
-                          >
-                      <div class="mdc-radio__background">
-                        <div class="mdc-radio__outer-circle"></div>
-                        <div class="mdc-radio__inner-circle"></div>
-                      </div>
-                      <div class="mdc-radio__ripple"></div>
-                    </div>
                   </div>
-                    <label id="radio-3-label"
-                      for="input-radio-3"
-                      class="mdc-list-item__text">
-                      Godzilla
-                    </label>
-                </li>
 
-              </ul>
+              </div>
             </div>
             <div class="mdc-dialog__actions">
-              <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+              <button type="button" 
+                  class="mdc-button mdc-dialog__button" 
+                  data-mdc-dialog-action="close"
+                >
                 <div class="mdc-button__ripple"></div>
                 <span class="mdc-button__label">Cancel</span>
               </button>
-              <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">
+              <button type="button" 
+                  class="mdc-button mdc-dialog__button" 
+                  data-mdc-dialog-action="accept" 
+                  data-mdc-dialog-button-default
+                >
                 <div class="mdc-button__ripple"></div>
                 <span class="mdc-button__label">OK</span>
               </button>
@@ -289,96 +287,82 @@ class AlertDialogImpl extends LitElement implements AlertDialog {
     `
   }
 
-  // componentDidMount() {
-  //   this.dialogEl.addEventListener('MDCDialog:closing', this.handleClosing);
-  // }
-
-  // componentWillUnmount() {
-  //   this.dialogEl.removeEventListener('MDCDialog:closing', this.handleClosing);
-  //   this.dialog.destroy();
-  // }
-
-  handleClosing() {
-    // this.result = this.dialogEl.action;
-    this.resultCallback(this.result);
+  private _handleClosed = (evt: Event) => {
+    const action = (evt as CustomEvent).detail.action
+    this.result = {
+      action: (evt as CustomEvent).detail.action,
+      selection: action=="accept" ? this._selection : null
+    }
+    this.resultCallback(this.result)
   }
 
-  // add listeners when the element is added to the DOM
+  private _handleOpening = (evt: Event) => {
+    const radioButtons = this.shadowRoot?.querySelectorAll('.mdc-radio') as NodeListOf<HTMLButtonElement>
+
+    // select the first radio button as defaul
+    radioButtons.item(0).querySelector('input')?.click()    
+  }
+
+  private _getRadioButtonInfo(index: number): [number, string, string] {
+    const radioButtons = this.shadowRoot?.querySelectorAll('.mdc-radio') as NodeListOf<HTMLButtonElement>
+    const button = radioButtons.item(index)
+    const buttonId = button.querySelector('input')?.id ?? ''
+    const buttonLabel = (button?.nextSibling?.nextSibling as HTMLLabelElement)?.innerText.trim()
+
+    return [index, buttonId, buttonLabel]
+  }
+
   firstUpdated() {
-    this.dialogEl = this.shadowRoot?.querySelector('.mdc-dialog') as HTMLDialogElement;
-    this.dialog = new MDCDialog(this.dialogEl);
+    this._dialogEl = this.shadowRoot?.querySelector('.mdc-dialog') as HTMLDialogElement
+    this._dialog = new MDCDialog(this._dialogEl);
     
-    this.dialogEl.addEventListener('MDCDialog:closing', this.handleClosing);
-    // this.dialogEl.addEventListener('MDCDialog:closed', this.handleClosed);
-    // this.dialogEl.addEventListener('MDCDialog:opened', this.handleOpened);
-    // this.dialogEl.addEventListener('MDCDialog:opening', this.handleOpening);
-
-    // this.dialogEl.addEventListener('MDCDialog:accept', this.handleAccept);
-    // this.dialogEl.addEventListener('MDCDialog:cancel', this.handleCancel);
-    // this.dialogEl.addEventListener('MDCDialog:close', this.handleClose);
-
     // Add interactivity to the MDC Radio Buttons
-    const radioButtons = this.shadowRoot?.querySelectorAll('.mdc-radio') as NodeListOf<HTMLButtonElement>;
-    radioButtons.forEach((button) => {
+    const radioButtons = this.shadowRoot?.querySelectorAll('.mdc-radio') as NodeListOf<HTMLButtonElement>
+    radioButtons.forEach((button, index) => {
+      const radio = new MDCRadio(button)
+      radio.listen('change', () => {
+        this._selection = this._getRadioButtonInfo(index)
+      })
+
       new MDCRadio(button)
-    });
+    })
 
-    this.dialog.listen('MDCDialog:opened', () => {
-      this.dialog.layout();
-    });
+    // Set default selection
+    this._selection = this._getRadioButtonInfo(0)
+    radioButtons.item(0).querySelector('input')?.setAttribute('checked', 'true')
 
-    const lists = this.shadowRoot?.querySelectorAll('.mdc-list') as NodeListOf<HTMLButtonElement>;
-    lists.forEach((list) => {
+    // Add interactivity to the MDC Form Field
+    const formFields = this.shadowRoot?.querySelectorAll('.mdc-form-field') as NodeListOf<HTMLDivElement>
+    formFields.forEach((formField) => {
+      new MDCFormField(formField);
+    })
+
+    const lists = this.shadowRoot?.querySelectorAll('.mdc-list') as NodeListOf<HTMLUListElement>
+    lists.forEach((list: HTMLUListElement) => {
       // add ripple to list items
-      (list as any).listElements.map((listItemEl: Element) => {
+      (list as any).listElements?.map((listItemEl: Element) => {
         new MDCRipple(listItemEl);
-      });
+      })
 
       new MDCList(list)
-    });
+    })
+
+    // this._dialogEl.addEventListener('MDCDialog:closing', this.handleClosing)
+    this._dialogEl.addEventListener('MDCDialog:closed', this._handleClosed)
+    // this._dialogEl.addEventListener('MDCDialog:opened', this.handleOpened)
+    this._dialogEl.addEventListener('MDCDialog:opening', this._handleOpening)
+    
+    this._dialog.listen('MDCDialog:opened', () => {
+      this._dialog.layout();
+    })
 
 
-
-    // this.dialog.addEventListener('close', (e) => {
-    //   this.result = this.dialog.returnValue
-    //   this?.resultCallback(this.result)
-    // })
-
-    // // Click outside dialog closes it
-    // this.dialog.addEventListener('click', e => {
-    //   if((e as PointerEvent).pointerId === -1) return; // ignore keyboard-sourced `clicks`
-
-    //   var rect = this.dialog.getBoundingClientRect();
-    //   var isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
-    //     rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
-      
-    //   if (!isInDialog) {
-    //     this.dialog.close();
-    //   }
-    // })
-
-    // // Listen for "enter" key
-    // this.dialog.addEventListener('keydown', (e) => {
-    //   if (e.key === "Enter") {
-    //     this.dialog.returnValue = "btn_confirm"
-    //     this.dialog.close();
-    //   }
-    // })
+    // Listen for "enter" key
+    this._dialogEl.addEventListener('keydown', (e) => {
+      if (e.key === "Enter") {
+        this._dialog.close();
+      }
+    })
   }
 
-  openDialog() {
-    this.dialog.open()
-  }
-
-  cancelDialog() {
-    this.dialog.close()
-    this.result = "btn_cancel"
-    this?.resultCallback(this.result)
-  }
-
-  confirmDialog() {
-    this.dialog.close()
-    this.result = "btn_confirm"
-    this?.resultCallback(this.result)
-  }
 }

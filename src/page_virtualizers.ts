@@ -14,7 +14,7 @@ import { SimpleDialog } from './components/simple-dialog.js';
 import './components/import-virtualizer.js';
 
 import './components/alert-dialog.js';
-import { AlertDialog } from './components/alert-dialog.js';
+import { AlertDialog, AlertDialogResult } from './components/alert-dialog.js';
 
 @customElement('page-virtualizers')  // ts
 class PageVirtualizers extends LitElement {
@@ -56,7 +56,7 @@ class PageVirtualizers extends LitElement {
   data: {text: string}[] = new Array(100).fill('').map((i, n) => ({text: `Item ${n}`}));
 
   @state()
-  dialogResult: string | undefined;
+  simpleDialogResult: string | undefined;
 
   // @query('alert-dialog')
   @state()
@@ -65,13 +65,16 @@ class PageVirtualizers extends LitElement {
   @state()
   alertDialog: AlertDialog | undefined;
 
+  @state()
+  alertDialogResult: AlertDialogResult | undefined;
+
   firstUpdated() {
     // setup the dialog result callback
     // note: assigning a function to an attribute is ok. Also can assign an object, not just a string or boolean.
     (this.shadowRoot?.querySelector("simple-dialog") as SimpleDialog).resultCallback = 
       (result: string) => {
         console.log("dialog resultCallback: " + result)
-        this.dialogResult = result;
+        this.simpleDialogResult = result;
       }
     
     let data = this.getTextData().then((data) => {
@@ -79,7 +82,11 @@ class PageVirtualizers extends LitElement {
     })
 
     this.alertDialogEl = this.shadowRoot?.querySelector("alert-dialog") as HTMLElement;
-    this.alertDialog = this.alertDialogEl as AlertDialog;
+    this.alertDialog = this.alertDialogEl as AlertDialog
+    (this.alertDialogEl as AlertDialog).resultCallback = (result: AlertDialogResult) => {
+      console.log("alertDialog resultCallback: " + JSON.stringify(result, null, 2))
+      this.alertDialogResult = result
+    }
   }
 
   async getJsonData(): Promise<any> {
@@ -92,8 +99,8 @@ class PageVirtualizers extends LitElement {
     return await response.text()
   }
 
-  dialogResultString() {
-    let value = this.dialogResult;
+  simpleDialogResultString() {
+    let value = this.simpleDialogResult;
     if(value == "btn_cancel") {
       return "Clicked Cancel";
     } else if(value == "btn_confirm") {
@@ -124,12 +131,9 @@ class PageVirtualizers extends LitElement {
         <br>
 
         <h3>SimpleDialog</h3>
-        <button @click=${() => {
-            (this.shadowRoot?.querySelector("alert-dialog") as AlertDialog).openDialog()
-          }}>Open MDC Alert Dialog</button>
         <simple-dialog></simple-dialog>
         <br>
-        <p>${this.dialogResultString()}</p>
+        <p>${this.simpleDialogResultString()}</p>
         <br>
 
         <h3>MDC Alert Dialog</h3>
@@ -138,6 +142,9 @@ class PageVirtualizers extends LitElement {
           }}>Open MDC Alert Dialog</button>
         <br>
         <alert-dialog id="alert-dialog"></alert-dialog>
+        <p>${JSON.stringify(this.alertDialogResult)}</p>
+        <br>
+        <br>
 
         <!-- This is the original naîve version that will bog-down rendering performance any browser -->
         <!-- 

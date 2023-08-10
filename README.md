@@ -188,4 +188,40 @@ Basic Auth
     - https://www.htmlelements.com/demos/grid/column-dynamic-template/ 
 - Material Design
   - https://m2.material.io/develop/web/guides/importing-js
-  -  
+  
+8/9/23
+- Material Design Components
+  - https://m2.material.io/develop/web/supporting/form-fields
+- Radio Buttons
+  - https://m2.material.io/components/radio-buttons/web#radio-buttons
+- Dialogs
+  - https://github.com/material-components/material-components-web/blob/master/packages/mdc-dialog/README.md
+- Lists
+  - https://material-components.github.io/material-components-web-catalog/#/component/list 
+  
+- Lion (unstyled components)
+  - https://lion-web.netlify.app/components/input-stepper/overview/
+- MDC Web Components
+  - https://github.com/material-components/material-components-web/tree/master/packages/mdc-dialog
+  -  https://material-components.github.io/material-components-web-catalog/#/component/dialog
+
+- Smart Components - Table with Data from Ajax
+  - https://www.htmlelements.com/demos/page-templates/admin-template/ajax-data 
+- CSS Only floating labels
+   - https://codepen.io/kvncnls/pen/MWmJaPw
+-  Nice Placeholders
+   - https://codepen.io/ainalem/pen/GRqPwoz
+- CSS Forms
+  - https://freefrontend.com/css-forms/
+-  
+
+- store json in element attribute
+var my_object ={"Super Hero":["Iron Man", "Super Man"]};
+var data_str = encodeURIComponent(JSON.stringify(my_object));
+data_str = '%7B%22Super%20Hero%22%3A%5B%22Iron%20Man%22%2C%22Super%20Man%22%5D%7D'
+decodeURIComponent(data_str)
+
+<div data-foobar='{"foo":"bar"}'></div>  // automatically convers to Object property in JS
+
+- More guide to web components
+  - https://javascript.info/custom-elements

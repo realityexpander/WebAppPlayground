@@ -58,6 +58,7 @@
     "@web/dev-server-esbuild": "^0.3.5",
     "concurrently": "^8.0.1",
     "cypress": "^12.9.0",
+    "haunted": "^5.0.0",
     "lit": "^2.7.0",
     "lit-element": "^3.3.3",
     "lit-html": "^2.8.0",

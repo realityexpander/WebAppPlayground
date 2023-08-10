@@ -9,12 +9,19 @@ import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
 import { masonry } from '@lit-labs/virtualizer/layouts/masonry.js';
 import { repeat } from 'lit/directives/repeat.js';
 
+// Simple Dialog
 import './components/simple-dialog.js';
 import { SimpleDialog } from './components/simple-dialog.js';
 import './components/import-virtualizer.js';
 
+// MDC Alert Dialog
 import './components/alert-dialog.js';
 import { AlertDialog, AlertDialogResult } from './components/alert-dialog.js';
+
+// Controllers
+import {ClockController} from './components/clock-controller.js';
+import {NamesController} from './components/names-controller.js';
+import * as Names from './components/names-api.js';
 
 @customElement('page-virtualizers')  // ts
 class PageVirtualizers extends LitElement {
@@ -50,6 +57,16 @@ class PageVirtualizers extends LitElement {
         background-color: #ddd;
       }
     `];
+
+  // Create the clock controller and store it
+  private _clock = new ClockController(this, 100);
+  private _timeFormat = new Intl.DateTimeFormat('en-US', {
+    hour: 'numeric', minute: 'numeric', second: 'numeric',
+  });
+
+  // Create the names controller and store it
+  private names = new NamesController(this);
+  
 
   @query('ul')  // gets a reference to the <ul> element in the template
   list: HTMLUListElement | undefined;
@@ -87,6 +104,21 @@ class PageVirtualizers extends LitElement {
       console.log("alertDialog resultCallback: " + JSON.stringify(result, null, 2))
       this.alertDialogResult = result
     }
+
+    let animEl = this.shadowRoot?.querySelector("#anim") as HTMLElement;
+    animEl.animate([
+      { transform: 'scale(1)', opacity: 1, offset: 0 },
+      { transform: 'scale(.5)', opacity: .5, offset: .3 },
+      { transform: 'scale(.667)', opacity: .667, offset: .7875 },
+      { transform: 'scale(.6)', opacity: .6, offset: 1 }
+    ], {
+      duration: 1000, //milliseconds
+      easing: 'ease-in-out', //'linear', a bezier curve, etc.
+      delay: 10, //milliseconds
+      iterations: Infinity, //or a number
+      direction: 'alternate', //'normal', 'reverse', etc.
+      fill: 'forwards' //'backwards', 'both', 'none', 'auto'
+    });
   }
 
   async getJsonData(): Promise<any> {
@@ -107,7 +139,14 @@ class PageVirtualizers extends LitElement {
       return "Clicked Confirm";
     }
   }
+
+  private _kindChange(e: Event) {
+    this.names.kind = (e.target as HTMLSelectElement).value as Names.Kind;
+  }
+
   render() {
+    const formattedTime = this._timeFormat.format(this._clock.value);
+
     return html`
       <div class="wrapper">
         <style>
@@ -120,14 +159,37 @@ class PageVirtualizers extends LitElement {
           }
         </style>
         
-        <h1>This is the page for Virtualizers</h1>
+        <h1>This is the page for Virtualizers & Controllers</h1>
         <h3>Should be called "FastList", "LitList" or "QuickList"</h3>
         <br>
         <br>
-        <h3>@lit-labs/virtualizer</h3>
+        <h3>Docs for @lit-labs/virtualizer</h3>
         <a href="https://www.youtube.com/watch?v=ay8ImAgO9ik" target="_blank">Lit Labs Virtualizer</a><br> 
         <a href="https://codesandbox.io/s/litelement-typescript-litvirtualizer-sxjsww?file=/src/x-row-scroller.ts" target="_blank">Horizontal Scroller</a>
         <br>
+        <br>
+        <h3>Controllers</h3>
+        <p>Current time: ${formattedTime}</p>
+        <!-- Send message to the controller -->
+        <button @click=${() => { this._clock.logThis() }}>this._clock.logThis()</button>
+        <br>
+        <br>
+        <h4>Names List</h4>
+          Kind: <select @change=${this._kindChange}>
+          ${this.names.kinds.map(
+            (key) => html`<option value=${key}>${key}</option>`)
+          }
+        </select>
+        ${this.names.render({
+          complete: (result: Names.Result) => html`
+            <p>List of ${this.names.kind}</p>
+            <ul>${result.map(i => html`<li>${i.name}</li>`)}
+            </ul>
+          `,
+          initial: () => html`<p>Select a kind...</p>`,
+          pending: () => html`<p>Loading ${this.names.kind}...</p>`,
+          error: (e: any) => html`<p style="color: red;">${e}</p>`
+        })}
         <br>
 
         <h3>SimpleDialog</h3>
@@ -145,6 +207,8 @@ class PageVirtualizers extends LitElement {
         <p>${JSON.stringify(this.alertDialogResult)}</p>
         <br>
         <br>
+
+        <h3 id="anim" style="backdrop-filter: blur(200px);">Virtualizer</h3>
 
         <!-- This is the original naîve version that will bog-down rendering performance any browser -->
         <!-- 

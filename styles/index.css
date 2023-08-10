@@ -30,17 +30,19 @@ h1, h2, h3, h4, h5, h6, p {
 
 /* Custom Theme - overrides node_modules/@material/theme/dist/mdc.theme.css */
 * {
-  font-family: system-ui, Roboto, sans-serif;
-  font-size: 1rem;
-  padding: 0;
-  margin: 0;
-  /* box-sizing: border-box; */
+	font-family: system-ui, Roboto, sans-serif;
+	font-size: 1rem;
+	padding: 0;
+	margin: 0;
+	/* box-sizing: border-box; */
 
-  --mdc-theme-primary: midnightblue;
-  --mdc-theme-background: #eeeeee;
-  --mdc-typography-subtitle1-font-size: 1rem;
+	--mdc-theme-primary: midnightblue;
+	--mdc-theme-background: #222222;
+	--mdc-typography-subtitle1-font-size: 1rem;
+	background: #222222;
+	--mdc-theme-primary-on-background: #EEEEEE;
 }
 
 .main-content {
-  padding: 1rem;
+	padding: 1rem;
 }

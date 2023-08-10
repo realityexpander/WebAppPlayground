@@ -147,7 +147,8 @@ class AlertDialogImpl extends LitElement implements AlertDialog {
       </div>
       -->
 
-      
+
+      <!-- Radio Buttons -->
       <div class="mdc-dialog">
         <div class="mdc-dialog__container">
           <div class="mdc-dialog__surface"

@@ -116,6 +116,12 @@ class App extends Router(LitElement) {
                 import: () => import("./page_virtualizers.js"),
                 secured: true
             },
+            {
+                path: "/animation1",
+                component: "page-animation1",
+                import: () => import("./page_animation1.js"),
+                secured: true
+            },
             // Using 'category' variable, & is required.
             {
                 path: "/news/:category",

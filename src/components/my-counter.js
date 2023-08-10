@@ -1,4 +1,24 @@
-import { html, component, useState } from 'https://cdn.pika.dev/haunted';
+import { html } from 'lit';
+import { component, useState } from 'haunted'
+
+/** 
+  Haunted lets you use React components in lit.
+
+  Haunted supports the same API as React Hooks. 
+  The hope is that by doing so you can reuse hooks available on npm simply by aliasing package names in your bundler's config.
+
+  Currently Haunted supports the following hooks:
+
+  useCallback
+  useContext
+  useController
+  useEffect
+  useLayoutEffect
+  useMemo
+  useReducer
+  useRef
+  useState
+**/
 
 function Counter() {
   const [count, setCount] = useState(0);

@@ -26,7 +26,7 @@ class PageAnimations1 extends LitElement {
       }
       
       /* When the trailer is active, show the icon. */
-      /* CSS meaning: when the trailer has a data-type attribute that is not undefined, set the opacity on the #trailer element to 1. */
+      /* CSS meaning: when the trailer has a data-type attribute that is anything but "undefined", set the opacity on the #trailer element to 1. */
       #trailer:not([data-type="undefined"]) > #trailer {
         opacity: 1;
       }
@@ -51,7 +51,7 @@ class PageAnimations1 extends LitElement {
       }
       
       /* When the trailer is active, show the icon. */
-      /* CSS meaning: when the trailer has a data-type attribute that is not undefined, set the opacity on the #trailer-icon element to 1. */
+      /* CSS meaning: when the trailer has a data-type attribute that is anything but "undefined", set the opacity on the #trailer-icon element to 1. */
       #trailer:not([data-type="undefined"]) > #trailer-icon {
         opacity: 1;
       }
@@ -90,12 +90,8 @@ class PageAnimations1 extends LitElement {
 
   constructor() {
     super();
-    // super().attachShadow({mode:'open'})
-    //        .innerHTML = `<style>@import url('${href}')</style>`+
-    //        [`check`,`square-check`,`circle-check`,`gear`]
-    //          .map(icon=>`fa-${icon}: <i class="fa fa-${icon}"></i><br>`).join("");
 
-    // If font has not been loaded yet, load it now.
+    // If font-awesome has not been loaded yet, load it now.
     // Note: should pre-load font in <head> instead, but this will force it to load.
     if (!document.querySelector(`link[href="${this._fontAwesomeHref}"]`)) {
       document.head.append(
@@ -129,14 +125,14 @@ class PageAnimations1 extends LitElement {
       );
     }
 
-    const getTrailerClass = (type: "video" | "link") => {
+    const getTrailerClass = (type: "video" | "link"): string => {
       switch(type) {
         case "video":
           return "fa-solid fa-play"; // play video
         case "link":
           return "fa-solid fa-arrow-up-right-from-square";  // go to link
         default:
-          return "fa-solid fa-question-circle"; // unknown
+          return "undefined"; // unknown
       }
     }
 

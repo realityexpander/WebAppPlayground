@@ -78,6 +78,34 @@ class PageAnimations1 extends LitElement {
         background-size: 105%;
         opacity: 0.8;
       }
+
+      /* Eyeball mouse tracker */
+      .move-area{/*normally use body*/
+        width: 100vw;
+        height: 100vh;
+        padding: 10% 45%;
+      }
+      .container {
+        width: 100%;
+      }
+      .eye {
+        position: relative;
+        display: inline-block;
+        border-radius: 50%;
+        height: 30px;
+        width: 30px;
+        background: #CCC;
+      }
+      .eye:after { /*pupil*/
+        position: absolute;
+        bottom: 17px;
+        right: 10px;
+        width: 10px;
+        height: 10px;
+        background: #000;
+        border-radius: 50%;
+        content: " ";
+      }
     `];
 
   // @state()
@@ -136,8 +164,14 @@ class PageAnimations1 extends LitElement {
       }
     }
 
-    // window.onmousemove = e => {
-    window.onmousemove = evt => {
+    // Custom scroll animation
+    document.onscroll = evt => {
+      const icon: HTMLElement = this.shadowRoot?.getElementById("interactable1") as HTMLElement;
+      icon.style.backgroundPosition = `center ${window.scrollY * .5}px`;
+    }
+
+    window.onmousemove = (evt) => {
+      // Track the cursor for Interactables
       const icon: HTMLElement = this.shadowRoot?.getElementById("trailer-icon") as HTMLElement;
       const interactTargetEl: HTMLElement | null = 
           evt.composedPath()
@@ -152,7 +186,22 @@ class PageAnimations1 extends LitElement {
       if(isInteracting) {
         icon.className = getTrailerClass(interactTargetEl?.dataset.type as "video" | "link" ?? "");
       }
+
+      // Track the cursor for Eyeball
+      let eye = Array.from(this.shadowRoot?.querySelectorAll('.eye') ?? [])
+      eye?.forEach( (eyeEl: Element) => {
+        let eye = eyeEl as HTMLElement
+
+        let x: number = (eye.offsetLeft) + (eye.offsetWidth / 2)
+        let y: number = (eye.offsetTop) + (eye.offsetHeight / 2)
+        let rad: number = Math.atan2(evt.pageX - x, evt.pageY - y)
+        let rot: number = (rad * (180 / Math.PI) * -1) + 180.0;
+
+        // set eye style
+        (eye as HTMLElement).style.transform = 'rotate(' + rot + 'deg)'
+      })
     }
+
   }
 
   private _onInteractableClick = (evt: Event) => {
@@ -192,6 +241,7 @@ class PageAnimations1 extends LitElement {
 
         <div @click="${this._onInteractableClick}">
           <div 
+            id="interactable1"
             class="interactable" 
             data-type="link"
             href="https://youtu.be/CZIJKkwc8l8"
@@ -205,6 +255,13 @@ class PageAnimations1 extends LitElement {
             style="background-image: url(https://images.unsplash.com/photo-1657779582398-a13b5896ff19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzNXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60)">     
           </div>
         </div>
+
+        <section class="move-area">
+          <div class='.container'>
+            <div class='eye'></div>
+            <div class='eye'></div>
+          </div>
+        </section>
 
       </div>
     `

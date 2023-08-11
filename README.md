@@ -225,3 +225,8 @@ decodeURIComponent(data_str)
 
 - More guide to web components
   - https://javascript.info/custom-elements
+
+8/10/23
+- Interesting effects
+- Anitmation channel: https://www.youtube.com/@Hyperplexed/videos
+- https://codepen.io/Hyperplexed/pen/zYWvXMM

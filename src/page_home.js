@@ -95,7 +95,9 @@ class Home extends LitElement {
         <a href="/">Home</a>
         <a href="/stocks">Stocks</a>
         <a href="/trade/123">Trade</a>
-        <a href="/news/tech">News</a>
+        <a href="/news/tech">News</a><br>
+        <br>
+
         <a href="/simpletables">SimpleTables</a>
         <a href="/virtualizers">Virtualizers</a>
         <br>

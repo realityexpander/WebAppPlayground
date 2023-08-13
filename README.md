@@ -230,3 +230,7 @@ decodeURIComponent(data_str)
 - Interesting effects
 - Anitmation channel: https://www.youtube.com/@Hyperplexed/videos
 - https://codepen.io/Hyperplexed/pen/zYWvXMM
+
+- Lit playground
+- https://lit.dev/playground/#sample=examples/motion-grid
+- 

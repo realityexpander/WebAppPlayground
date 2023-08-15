@@ -22,7 +22,7 @@ export interface ShareDialogResult {
 
 
 // https://web.dev/building-a-dialog-component/
-// https://sharingbuttons.io
+// https://sharingbuttons.io - code generator
 @customElement('share-dialog') // ts
 class ShareDialogImpl extends LitElement implements ShareDialog {
 

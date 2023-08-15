@@ -24,6 +24,8 @@ export interface AlertDialogResult {
   selection: [number, string, string] | null
 }
 
+
+// https://web.dev/building-a-dialog-component/
 @customElement('alert-dialog') // ts
 class AlertDialogImpl extends LitElement implements AlertDialog {
 

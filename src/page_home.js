@@ -98,8 +98,9 @@ class Home extends LitElement {
         <a href="/news/tech">News</a><br>
         <br>
 
-        <a href="/simpletables">SimpleTables</a>
-        <a href="/virtualizers">Virtualizers</a>
+        <a href="/simpletables">SimpleTables</a><br>
+        <a href="/virtualizers">Virtualizers</a><br>
+        <a href="/slot-dialog">Slot-dialog</a><br>
         <br>
         <br>
 

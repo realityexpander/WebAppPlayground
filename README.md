@@ -233,4 +233,28 @@ decodeURIComponent(data_str)
 
 - Lit playground
 - https://lit.dev/playground/#sample=examples/motion-grid
-- 
+
+8/14/23
+ - Typescript toolkit
+ - https://github.com/millsp/ts-toolbelt/blob/319e551/sources/String/Split.ts#L23
+
+ - TypeScript Docs
+ - https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html
+
+ - https://type-level-typescript.com/types-are-just-data
+
+ - Design Systems using Web Components
+ - https://htmlwithsuperpowers.netlify.app/using/systems.html
+ 
+ - Server Side Rendering (SSR)
+ - https://lwc.dev/guide/ssr
+ - https://begin.com/blog/posts/2023-02-10-why-we-ssr-web-components
+ - https://www.youtube.com/watch?v=ArDHZfTRkcw&t=1535s
+
+ - UI Shoelace - Web Components
+ - https://shoelace.style/?id=what-problem-does-this-solve
+ - UI Toolkit - Load from CDN on the fly
+
+8/14/23
+  - Sharing buttons dialog - sharingbuttons.io
+  -  https://www.youtube.com/watch?v=gdvRHhG_wt8&list=WL

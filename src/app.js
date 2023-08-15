@@ -122,6 +122,12 @@ class App extends Router(LitElement) {
                 import: () => import("./page_animation1.js"),
                 secured: true
             },
+            {
+                path: "/slot-dialog",
+                component: "page-slot-dialog",
+                import: () => import("./page_slot_dialog.js"),
+                secured: true
+            },
             // Using 'category' variable, & is required.
             {
                 path: "/news/:category",

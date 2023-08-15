@@ -3,7 +3,7 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 
 import { styles } from '../style_scripts/modified-material-components-web.min.css.js';
 import { MDCDialog } from '@material/dialog/component.js';
-import { SlotDialog } from './slot-dialog.js';
+import { SlotDialog, SlotDialogResult } from './slot-dialog.js';
 
 export interface ShareDialog extends HTMLElement {
   resultCallback: (result: ShareDialogResult) => void;
@@ -228,7 +228,7 @@ class ShareDialogImpl extends LitElement implements ShareDialog {
   result: ShareDialogResult | undefined;
   
   @query('slot-dialog')
-  dialogEl!: HTMLElement
+  slotDialogEl!: HTMLElement
 
   render() {
     let encodedTitle = encodeURIComponent(this.title);
@@ -236,7 +236,12 @@ class ShareDialogImpl extends LitElement implements ShareDialog {
     let encodedUrl = encodeURIComponent(this.url);
 
     return html`
-      <slot-dialog title=${this.title} cancelButtonText = "">
+      <slot-dialog 
+        title=${this.title} 
+        cancelButtonText = ""
+        confirmButtonText = "Done"
+        resultCallback = ${this.resultCallback}
+      >
         <!-- Sharingbutton Facebook -->
         <a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=${encodedUrl}" target="_blank" rel="noopener" aria-label="Facebook">
           <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--medium"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solidcircle">
@@ -267,14 +272,13 @@ class ShareDialogImpl extends LitElement implements ShareDialog {
   }
 
   firstUpdated() {
-    // this.dialogEl = this.shadowRoot!.querySelector('slot-dialog')!;
-    (this.dialogEl as any).addEventListener('closed', (e: CustomEvent) => {
-      this.resultCallback(e.detail);
-    });
+    (this.slotDialogEl as SlotDialog).resultCallback = (result: SlotDialogResult) => {
+      this.resultCallback(result);
+    }
   }
 
   openDialog() {
-    (this.dialogEl as SlotDialog).openDialog();
+    (this.slotDialogEl as SlotDialog).openDialog();
   }
 
 }

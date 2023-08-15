@@ -125,7 +125,7 @@ class SlotDialogImpl extends LitElement implements SlotDialog {
       action: (evt as CustomEvent).detail.action,
       // selection: action=="accept" ? this._selection : null
     }
-    this.resultCallback(this.result)
+    this?.resultCallback(this.result)
   }
 
   private _handleOpening = (evt: Event) => {
@@ -149,7 +149,11 @@ class SlotDialogImpl extends LitElement implements SlotDialog {
     // Listen for "enter" key
     this._dialogEl.addEventListener('keydown', (e) => {
       if (e.key === "Enter") {
-        this._dialog.close();
+        (this._dialogEl.querySelector('[data-mdc-dialog-action="confirm"]') as HTMLElement)?.click()
+      }
+      if (e.key === "Escape") {
+        (this._dialogEl.querySelector('[data-mdc-dialog-action="cancel"]') as HTMLElement)?.click()
+        // this._dialog.close();
       }
     })
   }

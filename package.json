@@ -62,6 +62,7 @@
     "lit": "^2.7.0",
     "lit-element": "^3.3.3",
     "lit-html": "^2.8.0",
+    "redis": "^4.6.7",
     "rollup": "^2.79.1",
     "simple-wc-router": "^2.3.4",
     "smart-webcomponents": "^15.2.10",

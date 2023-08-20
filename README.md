@@ -8,6 +8,38 @@ for use with ktor-web-app-server and node-typescript-json-server
 - terminal 2
   - `npm run start-dev-tsc-wds-1`
 
+### Start Redis server
+  - brew install redis
+  - redis-server
+  - redis-cli
+
+  - Run `redis-stack-server` to start the server
+
+  - Redis Commands
+    - SET [key] [value]
+    - GET [key]
+    - DEL [key]
+    - KEYS *
+    - expire [key] [seconds] // sets expire time-to-live for key
+    - ttl [key]  // shows time-to-live for key
+    - setex [key] [ttl_seconds] [value] // sets expire and value
+    
+    - lpush [arr] [value] // pushes value into start of array (left side)
+    - rpush [arr] [value] // pushes value into end of array (right side)
+    - lrange [arr] [start] [end] // outputs the array in that range, 0=start, -1=end
+    - LPOP [arr] // pops item off the left of array
+    - RPOP [arr] // pop item from right side of arry
+    
+    - SADD [set] [value] // add to set
+    - SMEMBERS [set] // all values in set
+    - SREM [set]
+
+    - HSET [hash] [key] [value] // add/set hash item
+    - HGET [hash] [value]
+    - HGETALL [hash]
+    - HDEL [hash] [key]
+    - HEXISTS [hash]
+
 #### Serve by ngrok:
 Google Auth 
   - Requires OAuth Login

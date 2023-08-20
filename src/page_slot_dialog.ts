@@ -23,7 +23,31 @@ class PageSlotDialog extends LitElement {
 
   constructor() {
     super();
+  }
 
+  async redisSetKey(key: string, value: string) {
+    let result = await fetch(`redis/set?key=${key}&value=${value}`)
+    return await result.text()
+  }
+
+  async redisGetKey(key: string) {
+    let result = await fetch(`redis/get?key=${key}`)
+    return await result.text()
+  }
+
+  async redisGetKeys() {
+    let result = await fetch("redis/keys")
+    return await result.text()
+  }
+
+  async redisJsonGetKeys(key: string) {
+    let result = await fetch(`redis/jsonGet?key=${key}`)
+    return await result.json()
+  }
+
+  async redisJsonSetKeys(key: string, value: string) {
+    let result = await fetch(`redis/jsonSet?key=${key}&value=${value}`)
+    return await result.text()
   }
 
   firstUpdated() {
@@ -44,6 +68,50 @@ class PageSlotDialog extends LitElement {
         <h1>This is the page for Slot Dialog & Share Dialog</h1>
         <br>
         <br>
+
+        <h2>Redis</h2>
+        <button @click="${() => {
+          this.redisSetKey("key1", "data2").then((result) => {
+            this.shadowRoot!.getElementById("redis-result")!.innerHTML = result ?? "null";
+          }) 
+        }}">Redis Set Key</button>
+        <br>
+        <button @click="${() => {
+          this.redisGetKey("key1").then((result) => {
+            this.shadowRoot!.getElementById("redis-result")!.innerHTML = result ?? "null";
+          }) 
+        }}">Redis Get Key</button>  
+        <br>
+        <button @click="${() => {
+          this.redisGetKeys().then((result) => {
+            this.shadowRoot!.getElementById("redis-result")!.innerHTML = result ?? "null";
+          }) 
+        }}">Redis Keys</button>  
+        <p id="redis-result"></p>
+        <br>
+        <p id="redis-result"></p>
+        <br>
+        <br>
+
+        <!-- redis json -->
+        <button @click="${() => {
+          this.redisJsonGetKeys(".").then((result) => {
+            let result2 = JSON.stringify(JSON.parse(result.value), null, 2)
+            this.shadowRoot!.getElementById("redis-json-result")!.innerHTML = `<code>${result2}</code>` ?? "null";
+          }) 
+        }}">Redis Json Get Key</button>  
+        <br>
+        <button @click="${() => {
+          this.redisJsonSetKeys(".newjson", JSON.stringify({a:100, b:"your mom", e: "fuck"})).then((result) => {
+            this.shadowRoot!.getElementById("redis-json-result")!.innerHTML = result ?? "null";
+          })
+        }}">Redis Json Set Key</button>
+        <br>
+
+        <pre id="redis-json-result"></pre>
+        <br>
+
+
 
         <h2>Slot Dialog</h2>
         <button @click="${() => (this.slotDialog as SlotDialog).openDialog()}">Open Slot Dialog</button>

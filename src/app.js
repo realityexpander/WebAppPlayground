@@ -128,6 +128,12 @@ class App extends Router(LitElement) {
                 import: () => import("./page_slot_dialog.js"),
                 secured: true
             },
+            {
+                path: "/library-app",
+                component: "page-library-app",
+                import: () => import("./page_library_app.js"),
+                secured: true
+            },
             // Using 'category' variable, & is required.
             {
                 path: "/news/:category",
@@ -338,7 +344,7 @@ class App extends Router(LitElement) {
         <div class="mdc-top-app-bar__row">
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                 <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
-                <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
+                <span class="mdc-top-app-bar__title">Application Title</span>
             </section>
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
                 <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"

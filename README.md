@@ -7,13 +7,19 @@ for use with ktor-web-app-server and node-typescript-json-server
   - `npm run start-dev-watch-rollup`
 - terminal 2
   - `npm run start-dev-tsc-wds-1`
+- terminal 3
+  - `redis-stack-server`
 
 ### Start Redis server
   - brew install redis
   - redis-server
   - redis-cli
 
-  - Run `redis-stack-server` to start the server
+  - Run `redis-stack-server` from terminal to start the server
+
+  - Alternate:
+  - `brew services start redis`
+  - `brew services stop redis`
 
   - Redis Commands
     - SET [key] [value]
@@ -290,3 +296,7 @@ decodeURIComponent(data_str)
 8/14/23
   - Sharing buttons dialog - sharingbuttons.io
   -  https://www.youtube.com/watch?v=gdvRHhG_wt8&list=WL
+
+8/23/23
+  - Redis start & Stop
+  - https://tableplus.com/blog/2018/10/how-to-start-stop-restart-redis.html

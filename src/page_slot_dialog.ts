@@ -111,8 +111,6 @@ class PageSlotDialog extends LitElement {
         <pre id="redis-json-result"></pre>
         <br>
 
-
-
         <h2>Slot Dialog</h2>
         <button @click="${() => (this.slotDialog as SlotDialog).openDialog()}">Open Slot Dialog</button>
         <p>Slot dialog result:</p>

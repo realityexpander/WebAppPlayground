@@ -101,6 +101,7 @@ class Home extends LitElement {
         <a href="/simpletables">SimpleTables</a><br>
         <a href="/virtualizers">Virtualizers</a><br>
         <a href="/slot-dialog">Slot-dialog</a><br>
+        <a href="/library-app">Library App</a><br>
         <br>
         <br>
 

@@ -5,3 +5,5 @@ dist
 .parcel-cache/data.mdb
 dist/*.*
 cypress/screenshots
+.DS_Store
+

@@ -8,7 +8,7 @@ class PageLibraryApp extends LitElement {
   static styles = [
     styles,
     css`
-      body, html, .stuff {
+      body, html {
         width: 100%; 
         height: 100%; 
         margin: 0; 
@@ -49,12 +49,9 @@ class PageLibraryApp extends LitElement {
   render() {
     return html`
 
-      <!-- <div class="wrapper"> -->
-      <div class="stuff">
       <div class="row-container">
         <!-- <div class="first-row">
-          <p>Some text</p>
-          <p>And some more text</p>
+          <p>Header Text</p>
         </div> -->
         <iframe 
           class="second-row"
@@ -62,10 +59,8 @@ class PageLibraryApp extends LitElement {
           src="http://localhost:8081/libraryWeb/"
           height=${(window.innerHeight).toString()}
         ></iframe>
-      </div>
-      </div>
 
-      <!-- </div> -->
+      </div>
     `
   }
 

@@ -300,3 +300,40 @@ decodeURIComponent(data_str)
 8/23/23
   - Redis start & Stop
   - https://tableplus.com/blog/2018/10/how-to-start-stop-restart-redis.html
+
+  - Debunking Webcomponents misconceptions
+  - https://eisenbergeffect.medium.com/debunking-web-component-myths-and-misconceptions-ea9bb13daf61
+
+  You can share styles between Web Components.
+A common concern I hear from folks is that they can’t share existing styles with Web Components due to Shadow DOM encapsulation; or that they can’t share any form of common styles. However, this is probably just a misunderstanding. The standards support this, and most Web Component libraries make this very easy as well. All you need to do is create a style sheet and add it to the adoptedStyleSheets collection of the Web Component. The sheet can be shared across any Web Component that needs its styles. With CSS Script Modules, this is incredibly easy.
+
+import sheet from './styles.css' assert { type: 'css' };
+
+shadowRoot.adoptedStyleSheets = [sheet];
+
+  - Salesforce web component library (lightning)
+  - https://developer.salesforce.com/docs/platform/lwc/guide
+
+  - Fast web component library
+  - https://www.fast.design/
+
+8/24/23
+  - Redis client for Node
+  - https://github.com/redis-developer/spatialdj/blob/master/redis_client.js
+
+  - Custom Form elements as Web Component
+  - https://javascript.plainenglish.io/web-components-can-now-be-native-form-elements-107c7a93386
+  - https://itnext.io/native-form-validation-of-web-components-a599e85176c7
+
+  - Bootstrap stuff
+  - https://getbootstrap.com/docs/5.3/examples/
+  - https://github.com/mdbootstrap/mdb-ui-kit
+  - https://mdbootstrap.com/docs/standard/forms/overview/
+
+  - Web Component Library - Infragistics
+  - https://www.infragistics.com/products/ignite-ui-web-components/web-components/components/inputs/form
+
+  - Form associated Custom Element (Custom elements used inside forms)
+  - https://itnext.io/native-form-validation-of-web-components-a599e85176c7
+
+  

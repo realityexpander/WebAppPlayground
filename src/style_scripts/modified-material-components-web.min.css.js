@@ -70,7 +70,7 @@ export const styles = css`
   }
   */
 
-  * {
+  body {
     font-family: system-ui, Roboto, sans-serif;
     --mdc-typography-button-font-size: .75rem;
     --mdc-outlined-button-container-height: 30px;

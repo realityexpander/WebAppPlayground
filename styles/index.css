@@ -29,7 +29,7 @@ h1, h2, h3, h4, h5, h6, p {
 } */
 
 /* Custom Theme - overrides node_modules/@material/theme/dist/mdc.theme.css */
-* {
+body {
 	font-family: system-ui, Roboto, sans-serif;
 	font-size: 1rem;
 	padding: 0;

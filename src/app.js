@@ -134,6 +134,12 @@ class App extends Router(LitElement) {
                 import: () => import("./page_library_app.js"),
                 secured: true
             },
+            {
+                path: "/server-push",
+                component: "page-server-push",
+                import: () => import("./page_server_push.js"),
+                secured: true
+            },
             // Using 'category' variable, & is required.
             {
                 path: "/news/:category",

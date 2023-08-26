@@ -335,5 +335,6 @@ shadowRoot.adoptedStyleSheets = [sheet];
 
   - Form associated Custom Element (Custom elements used inside forms)
   - https://itnext.io/native-form-validation-of-web-components-a599e85176c7
+  - https://codepen.io/dannymoerkerke/pen/bGMwOVd
 
   

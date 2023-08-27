@@ -123,6 +123,8 @@ XADD mystream * {key} {value}
         <pre id="messageOutput"></pre>
         <br>
 
+        <!-- debounce https://www.geeksforgeeks.org/implement-search-box-with-debounce-in-javascript/ -->
+        <!-- textfield https://m2.material.io/components/text-fields/web#filled-text -->
         <h2>Search with debounce</h2>
         <label class="mdc-text-field mdc-text-field--outlined" style="width:100%;">
           <span class="mdc-text-field__ripple"></span>

@@ -41,6 +41,7 @@ body {
 	--mdc-typography-subtitle1-font-size: 1rem;
 	background: #222222;
 	--mdc-theme-primary-on-background: #EEEEEE;
+	color: var(--mdc-theme-primary-on-background);
 }
 
 .main-content {
